@@ -369,7 +369,7 @@ const About = () => {
                                     Hello, I am Krunal Janardan
                                     Chaudhari, a Full Stack Developer based in Surat, Gujarat.
                                     I specialize in building modern web applications using the MERN stack and Laravel.
-                                    With 1+ years of experience, I have worked on projects ranging from small
+                                    With 6+ Months of experience, I have worked on projects ranging from small
                                     business websites to enterprise-level applications.
                                 </p>
                                 <p className="text-slate-400 leading-relaxed mt-3">

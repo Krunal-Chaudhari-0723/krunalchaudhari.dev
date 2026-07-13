@@ -73,7 +73,7 @@ const stats = [
     { number: "300+", label: "Students Mentored", icon: FaUsers, filter: "all" },
     { number: "10+", label: "Projects Completed", icon: FaCode, filter: "all" },
     { number: "5+", label: "Certifications", icon: FaCertificate, filter: "certification" },
-    { number: "1+", label: "Years Experience", icon: FaLaptopCode, filter: "all" },
+    { number: "6+", label: "Months Experience", icon: FaLaptopCode, filter: "all" },
 ];
 
 const FILTERS = [

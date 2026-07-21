@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import myCv from '../assets/Krunal-Full Stack.pdf';
-import ProfileImage from '../assets/profile.jpg';
+import ProfileImage from '../assets/Profile.jpg';
 
 // Add this CSS for custom animations
 const styles = `

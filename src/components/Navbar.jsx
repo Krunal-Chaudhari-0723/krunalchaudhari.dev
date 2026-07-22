@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import ProfileImage from '../assets/profile.jpg';
+import ProfileImage from '../assets/new_profile.png';
 
 function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);

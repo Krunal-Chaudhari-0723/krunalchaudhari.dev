@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Profile from '../assets/profile.jpg'
+import Profile from '../assets/new_profile.png'
 
 // Add this CSS for custom animations
 const styles = `

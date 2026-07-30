@@ -1,5 +1,6 @@
 // App.js - Using HashRouter (Corrected)
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
+      <SpeedInsights />
     </HashRouter>
   );
 }

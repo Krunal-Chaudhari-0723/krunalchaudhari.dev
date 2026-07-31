@@ -1,0 +1,47 @@
+[
+  {
+    "year": "APR 2026 - PRESENT",
+    "title": "Fullstack Developer & AI Engineer",
+    "company": "The Hidden Ideas Infotech",
+    "description": "Building end-to-end web applications with modern tech stack. Implementing AI solutions and optimizing performance for scalable platforms.",
+    "tags": ["React", "Node.js", "Python", "AI"],
+    "color": "cyan",
+    "icon": "🤖"
+  },
+  {
+    "year": "FEB 2026 - MAR 2026",
+    "title": "Fullstack Developer",
+    "company": "Trueline Solutions",
+    "description": "Developed informative web applications during intensive training period. Collaborated with team to deliver responsive and user-friendly interfaces.",
+    "tags": ["JavaScript", "MongoDB", "Express"],
+    "color": "emerald",
+    "icon": "💼"
+  },
+  {
+    "year": "FEB 2022 - FEB 2026",
+    "title": "Programming Faculty",
+    "company": "MDIIT",
+    "description": "Teaching programming, web development and guiding students in projects. Mentored 100+ students in building real-world applications.",
+    "tags": ["Teaching", "Mentoring", "Curriculum Design"],
+    "color": "purple",
+    "icon": "📚"
+  },
+  {
+    "year": "JUL 2025",
+    "title": "Gen AI Intern",
+    "company": "TATA",
+    "description": "Worked on AI concepts, prompt engineering and modern AI tools. Developed prototypes showcasing generative AI capabilities.",
+    "tags": ["GPT", "Prompt Engineering", "LLM"],
+    "color": "orange",
+    "icon": "🎯"
+  },
+  {
+    "year": "MAY 2025 - JUL 2025",
+    "title": "Backend Developer Intern",
+    "company": "Kash Info Solution",
+    "description": "Worked on Laravel applications, database management and backend development. Implemented RESTful APIs and optimized database queries.",
+    "tags": ["Laravel", "PHP", "MySQL", "APIs"],
+    "color": "indigo",
+    "icon": "⚙️"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Mentored 300+ Students",
+    "description": "Guided over 300 students in programming, web development, and career direction.",
+    "date": "Feb 2023 - Feb 2026",
+    "type": "achievement"
+  },
+  {
+    "title": "Campus Mantri, GeeksforGeeks",
+    "description": "Served as Campus Ambassador, organizing technical events and workshops on campus.",
+    "date": "Jan 2026 - Apr 2026",
+    "type": "achievement"
+  },
+  {
+    "title": "Full Stack Development Certification",
+    "description": "Comprehensive certification covering the MERN stack and modern web tooling.",
+    "date": "Jun 2024",
+    "type": "certification"
+  },
+  {
+    "title": "TATA Gen AI Certificate",
+    "description": "Generative AI certification covering core concepts, prompt engineering, and LLM applications.",
+    "date": "Jul 2025",
+    "type": "certification"
+  },
+  {
+    "title": "Frontend Development Certification, freeCodeCamp",
+    "description": "freeCodeCamp certification in HTML, CSS, JavaScript, and responsive design.",
+    "date": "Apr 2026",
+    "type": "certification"
+  },
+  {
+    "title": "Frontend Certificate, VNSGU",
+    "description": "Veer Narmad South Gujarat University certificate in modern frontend technologies.",
+    "date": "Nov 2024",
+    "type": "certification"
+  }
+]

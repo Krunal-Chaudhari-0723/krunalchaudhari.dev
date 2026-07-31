@@ -9,6 +9,7 @@ import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Achievements from "./components/Achievements";
+import ChatWidget from "./components/chat/ChatWidget";
 
 function Home() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
+      <ChatWidget />
     </HashRouter>
   );
 }

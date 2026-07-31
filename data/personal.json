@@ -1,0 +1,18 @@
+{
+  "name": "Krunal Janardan Chaudhari",
+  "title": "Full Stack Developer & AI Engineer",
+  "location": "Surat, Gujarat, India",
+  "experience": "1+ Years",
+  "languages": ["English", "Hindi", "Marathi", "Gujarati"],
+  "summary": "Passionate Full Stack Developer and AI Engineer creating modern web applications with 1+ years of expertise. Pursuing MCA, constantly learning and exploring new technologies. Believes in writing clean, maintainable code and creating seamless user experiences.",
+  "aboutMe": "Hello, I am Krunal Janardan Chaudhari, a Full Stack Developer based in Surat, Gujarat. I specialize in building modern web applications using the MERN stack and Laravel. With 1+ Years of experience (including internships and faculty role), I have worked on projects ranging from small business websites to enterprise-level applications. Currently pursuing my MCA, I am constantly learning and exploring new technologies.",
+  "whatIDo": [
+    "Frontend Development with React & Next.js",
+    "Backend with Laravel and Node.js",
+    "Database Design (MongoDB, MySQL, PostgreSQL)",
+    "REST API Development",
+    "Full Stack Application Development",
+    "AI Integration & Prompt Engineering",
+    "Performance Optimization"
+  ]
+}

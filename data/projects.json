@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Seliora FreeLance",
+    "description": "A premium fullstack freelance platform built to connect clients and developers. Implements Razorpay payment gateway integration, Cloudinary media storage, and a robust admin panel.",
+    "tech": ["Next.js", "MongoDB", "Tailwind CSS", "Razorpay", "Cloudinary"],
+    "github": "https://github.com/Krunal-Chaudhari-0723/seloria",
+    "demo": "https://getseloria.vercel.app",
+    "image": "/src/assets/seloria.png",
+    "challenges": "Integrating complex webhook workflows for Razorpay payment confirmations, configuring responsive image uploads and processing via Cloudinary, and setting up clean multi-tenant role permissions in Next.js App Router.",
+    "featured": true
+  },
+  {
+    "title": "Food Delivery App",
+    "description": "MERN Stack food delivery application with cart management, user authentication, restaurant browsing, and an interactive admin dashboard for order tracking and inventory.",
+    "tech": ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"],
+    "github": "https://github.com/Krunal-Chaudhari-0723/FoodDelivery",
+    "demo": "https://krunalchaudhari-fooddel-frontend.netlify.app/",
+    "image": "/src/assets/food.png",
+    "challenges": "Designing real-time status updates for orders, securing user endpoints with JSON Web Tokens (JWT), and syncing cart operations across multiple sessions and page reloads.",
+    "featured": true
+  },
+  {
+    "title": "Jadoo - Travels Website",
+    "description": "Modern and responsive Tours & Travels landing platform designed to explore exotic destinations, tour packages, and travel deals. Features smooth scroll navigation and interactive UI elements.",
+    "tech": ["React", "Node.js", "JSON", "Tailwind CSS"],
+    "github": "https://github.com/Krunal-Chaudhari-0723/Technical-Task",
+    "demo": "https://lovely-stardust-c4a5fb.netlify.app/",
+    "image": "/src/assets/Jadoo.png",
+    "challenges": "Structuring dynamic JSON loaders for destination details and achieving high performance loading times and responsive layouts across all mobile screen viewports.",
+    "featured": false
+  }
+]

@@ -55,7 +55,7 @@ const projects = [
         tech: ["Next.js", "MongoDb", "Tailwind",  "Razorpay"],
         image: Seliora,
         github: "https://github.com/Krunal-Chaudhari-0723/seloria",
-        demo: "https://getseloria.vercel.app",
+        demo: "https://www.getseloria.com/",
         featured: true
     },
     {

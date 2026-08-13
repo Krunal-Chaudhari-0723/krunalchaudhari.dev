@@ -1,16 +1,117 @@
-# React + Vite
+# Krunal Chaudhari — Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal developer portfolio.
 
-Currently, two official plugins are available:
+🌐 **Live Website:** [krunalchaudhari.dev](https://www.krunalchaudhari.dev/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+I’m **Krunal Chaudhari**, a Full-Stack Developer focused on building modern, scalable and user-friendly web applications.
 
-## React Compiler
+## 🚀 About Me
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+I enjoy turning ideas into real-world web applications and continuously improving my development skills.
 
-## Expanding the ESLint configuration
+* 💻 Full-Stack Web Developer
+* ⚛️ React & Next.js Developer
+* 🟢 Node.js & Express.js
+* 🗄️ MongoDB & MySQL
+* 🔐 REST APIs & Authentication
+* 💳 Payment Gateway Integration
+* ☁️ Deployment & Production Hosting
+* 📚 MCA Student
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* React.js
+* Next.js
+* Tailwind CSS
+* Bootstrap
+* React Router
+
+### Backend
+
+* Node.js
+* Express.js
+* PHP
+* Laravel
+* REST APIs
+
+### Database
+
+* MongoDB
+* MySQL
+
+### Tools & Services
+
+* Git & GitHub
+* Vercel
+* Razorpay
+* Resend
+* Docker
+* Postman
+* VS Code
+
+## 📌 Featured Projects
+
+### 💎 Seloria — Jewelry E-Commerce Platform
+
+A production-ready jewelry e-commerce application with a modern shopping experience.
+
+**Features:**
+
+* User authentication
+* Product browsing
+* Shopping cart
+* Admin panel
+* Razorpay payment integration
+* Password reset through email
+* REST APIs
+* Responsive UI
+* Production deployment
+
+**Tech:** Next.js, React, Tailwind CSS, Node.js, MongoDB, Razorpay, Resend
+
+---
+
+### 🏫 EduFlow — Coaching CRM
+
+A multi-tenant coaching institute CRM and automation platform designed for managing students, courses, communication and institute operations.
+
+**Tech:** Next.js, Node.js, MongoDB, Mongoose, Better Auth
+
+---
+
+### 💻 Developer Portfolio
+
+My personal portfolio website showcasing my skills, projects, experience and development journey.
+
+**Tech:** Next.js, React, Tailwind CSS
+
+🌐 [Visit Portfolio](https://www.krunalchaudhari.dev/)
+
+## 📈 Currently Learning
+
+* Advanced Node.js & Backend Development
+* Express.js
+* MongoDB & Mongoose
+* System Design
+* Data Structures & Algorithms
+* Scalable Backend Architecture
+
+## 🎯 Career Goal
+
+My goal is to become a strong **Backend / Full-Stack Developer** capable of designing, developing and deploying production-grade applications.
+
+## 📫 Connect With Me
+
+* 🌐 Portfolio: [krunalchaudhari.dev](https://www.krunalchaudhari.dev/)
+* 💼 LinkedIn: [Krunal Chaudhari](https://www.linkedin.com/in/krunal-chaudhari-2b9ab5354)
+* 🐙 GitHub: [Krunal Chaudhari](https://github.com/Krunal-Chaudhari-0723)
+
+---
+
+⭐ If you find my projects interesting, consider giving them a star!

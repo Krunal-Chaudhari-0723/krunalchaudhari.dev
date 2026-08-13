@@ -1,4 +1,4 @@
-# Krunal Chaudhari — Developer Portfolio
+# Krunal Chaudhari Developer Portfolio
 
 Welcome to my personal developer portfolio.
 

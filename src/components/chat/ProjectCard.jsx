@@ -1,18 +1,20 @@
 import { motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
 import { HiEye } from "react-icons/hi";
+import AttendIQImg from '../../assets/attendiq.png';
 import SelioraImg from '../../assets/seloria.png';
 import FoodImg from '../../assets/food.png';
 import JadooImg from '../../assets/Jadoo.png';
 
 const imageMap = {
+  "AttendIQ - Smart Attendance": AttendIQImg,
   "Seliora FreeLance": SelioraImg,
   "Food Delivery App": FoodImg,
   "Jadoo - Travels Website": JadooImg,
 };
 
 const ProjectCard = ({ project }) => {
-  const { title, description, tech, github, demo, challenges } = project;
+  const { title, description, tech, github, demo, challenges, achievement } = project;
   const projectImg = imageMap[title] || null;
 
   return (
@@ -31,6 +33,11 @@ const ProjectCard = ({ project }) => {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
+          {achievement && (
+            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[9px] font-semibold shadow">
+              {achievement}
+            </span>
+          )}
         </div>
       )}
 

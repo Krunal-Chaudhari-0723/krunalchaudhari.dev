@@ -6,6 +6,7 @@ import { HiEye } from "react-icons/hi";
 import Food from '../assets/food.png';
 import Jadoo from '../assets/Jadoo.png';
 import Seliora from '../assets/seloria.png';
+import AttendIQ from '../assets/attendiq.png';
 
 // Add this CSS for custom animations
 const styles = `
@@ -49,6 +50,16 @@ const styles = `
 `;
 
 const projects = [
+    {
+        title: "AttendIQ - Smart Attendance",
+        description: "Smart attendance & student engagement system for Bhagwan Mahavir University. Verifies identity with Face AI and campus presence with location checks, then turns records into engagement insights, academic risk flags and AI recommendations, with Admin, Teacher and Student portals.",
+        tech: ["Next.js", "Face AI", "Geolocation", "AI Insights"],
+        image: AttendIQ,
+        github: "",
+        demo: "https://attendiqs.vercel.app/",
+        featured: true,
+        achievement: "🏆 Hackathon Winner - 1st Place"
+    },
     {
         title: "Seliora FreeLance",
         description: "This is the fullsatck website using Next js and MongoDB for database , Claudinary for storage, In this full stack website i use Razorpay for payment integration",
@@ -318,6 +329,12 @@ function Projects() {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
+                                    {project.achievement && (
+                                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-semibold tracking-wide shadow-lg shadow-amber-500/30">
+                                            {project.achievement}
+                                        </span>
+                                    )}
+
                                     {project.featured && (
                                         <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-cyan-500 text-white text-[10px] font-semibold tracking-wider uppercase shadow">
                                             Featured
@@ -349,6 +366,7 @@ function Projects() {
 
                                     {/* Buttons */}
                                     <div className="flex gap-3">
+                                        {project.github && (
                                         <motion.button
                                             whileHover={{ scale: 1.05, y: -2 }}
                                             whileTap={{ scale: 0.97 }}
@@ -358,6 +376,7 @@ function Projects() {
                                             <FaGithub className="text-sm" />
                                             GitHub
                                         </motion.button>
+                                        )}
 
                                         <motion.button
                                             whileHover={{ scale: 1.05, y: -2 }}

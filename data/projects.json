@@ -1,5 +1,16 @@
 [
   {
+    "title": "AttendIQ - Smart Attendance",
+    "description": "Hackathon-winning (1st place) smart attendance & student engagement system for Bhagwan Mahavir University. Combines Face AI identity verification and campus location checks with engagement analytics, explainable academic-risk rules and AI recommendations across Admin, Teacher and Student portals.",
+    "tech": ["Next.js", "Face AI", "Geolocation", "AI Insights"],
+    "github": "",
+    "demo": "https://attendiqs.vercel.app/",
+    "image": "/src/assets/attendiq.png",
+    "achievement": "🏆 Hackathon Winner - 1st Place",
+    "challenges": "Building a single source of truth that marks attendance only after both face identity and campus-radius location are verified, then turning raw records into weighted engagement signals and explainable risk flags.",
+    "featured": true
+  },
+  {
     "title": "Seliora FreeLance",
     "description": "A premium fullstack freelance platform built to connect clients and developers. Implements Razorpay payment gateway integration, Cloudinary media storage, and a robust admin panel.",
     "tech": ["Next.js", "MongoDB", "Tailwind CSS", "Razorpay", "Cloudinary"],

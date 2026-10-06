@@ -77,7 +77,7 @@ const INTENTS = [
   },
   {
     id: "projects",
-    terms: ["project", "projects", "portfolio", "built", "develop", "developed", "app", "apps", "eduflow", "seloria", "getseloria", "jadoo", "food", "codebase", "creation", "freelance", "worklist"],
+    terms: ["project", "projects", "portfolio", "built", "develop", "developed", "app", "apps", "eduflow", "attendiq", "attendance", "hackathon", "seloria", "getseloria", "jadoo", "food", "codebase", "creation", "freelance", "worklist"],
     type: "projects",
     data: projectsData,
     content: "Here are my featured projects. I build scalable applications with focus on clean architecture and performance:",

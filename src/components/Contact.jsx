@@ -1,72 +1,22 @@
-// Contact.jsx - With Enhanced Background Animations
+// Contact.jsx - Contact details and EmailJS form
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
-import {
-    FaGithub,
-    FaLinkedin,
-    FaInstagram,
-    FaEnvelope,
-    FaPhone,
-    FaFacebook,
-    FaMedium,
-} from "react-icons/fa";
+import { FiMail, FiPhone, FiCopy, FiCheck, FiArrowUpRight, FiSend } from "react-icons/fi";
+import { Section, SectionHeader, Reveal } from "./ui";
+import { EMAIL, PHONE, socials } from "../lib/site";
 
-// Add this CSS for custom animations
-const styles = `
-  @keyframes float-slow {
-    0%, 100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-30px) rotate(5deg);
-    }
-  }
-  
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.8; }
-  }
-  
-  @keyframes float-shape {
-    0%, 100% { 
-      transform: translateY(0px) rotate(0deg) scale(1);
-    }
-    33% { 
-      transform: translateY(-20px) rotate(120deg) scale(1.1);
-    }
-    66% { 
-      transform: translateY(10px) rotate(240deg) scale(0.9);
-    }
-  }
-  
-  .animate-float-slow {
-    animation: float-slow 8s ease-in-out infinite;
-  }
-  
-  .animate-twinkle {
-    animation: twinkle 3s ease-in-out infinite;
-  }
-  
-  .animate-float-shape {
-    animation: float-shape 15s ease-in-out infinite;
-  }
-`;
+const fields = [
+    { name: "name", label: "Name", type: "text", placeholder: "Your name", autoComplete: "name" },
+    { name: "email", label: "Email", type: "email", placeholder: "you@company.com", autoComplete: "email" },
+    { name: "phone", label: "Phone", type: "tel", placeholder: "+91 98765 43210", autoComplete: "tel" },
+];
+
+const inputClass = (hasError) =>
+    `w-full rounded-xl border bg-zinc-900/60 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-brand-400/60 focus:ring-2 focus:ring-brand-400/20 ${hasError ? "border-red-500/60" : "border-white/10"
+    }`;
 
 function Contact() {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            setMousePosition({
-                x: (e.clientX / window.innerWidth) * 100,
-                y: (e.clientY / window.innerHeight) * 100,
-            });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
     useEffect(() => {
         // Initialize EmailJS with your public key from environment
         emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
@@ -81,6 +31,7 @@ function Contact() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     // Validation Function
     const validate = () => {
@@ -104,7 +55,7 @@ function Contact() {
         }
 
         // Phone validation
-        const phoneRegex = /^[0-9\s\+\-\(\)]{7,}$/;
+        const phoneRegex = /^[0-9\s+\-()]{7,}$/;
         if (!formData.phone.trim()) {
             newErrors.phone = 'Phone number is required';
         } else if (!phoneRegex.test(formData.phone.trim())) {
@@ -170,412 +121,158 @@ function Contact() {
         }
     };
 
+    const copyEmail = async () => {
+        try {
+            await navigator.clipboard.writeText(EMAIL);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            window.location.href = `mailto:${EMAIL}`;
+        }
+    };
+
     return (
-        <>
-            <style>{styles}</style>
+        <Section id="contact" glow="center">
+            <SectionHeader
+                index="06"
+                eyebrow="Contact"
+                title="Let's build something together."
+                description="Open to freelance projects, full-time roles and collaborations. I usually reply within 24–48 hours."
+            />
 
-            <section id="contact" className="relative bg-[#0a0a1a] text-white py-28 px-6 overflow-hidden">
-                {/* Enhanced Background */}
-                <div className="absolute inset-0 bg-[#0a0a1a]" />
-
-                {/* Animated Gradient Orbs */}
-                <motion.div
-                    className="absolute top-20 left-10 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-3xl"
-                    animate={{
-                        x: mousePosition.x * 0.3 - 20,
-                        y: mousePosition.y * 0.3 - 20,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 1,
-                    }}
-                />
-
-                <motion.div
-                    className="absolute bottom-20 right-10 w-[500px] h-[500px] rounded-full bg-indigo-500/10 blur-3xl"
-                    animate={{
-                        x: (mousePosition.x - 50) * -0.2,
-                        y: (mousePosition.y - 50) * -0.2,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 0.8,
-                    }}
-                />
-
-                <motion.div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-3xl"
-                    animate={{
-                        x: mousePosition.x * 0.1 - 30,
-                        y: mousePosition.y * 0.1 - 30,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 1.2,
-                    }}
-                />
-
-                {/* Floating Shapes */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <motion.div
-                        className="absolute top-[15%] left-[5%] w-16 h-16 border border-cyan-500/20 rounded-full animate-float-slow"
-                        style={{ animationDelay: '0s' }}
-                    />
-                    <motion.div
-                        className="absolute top-[25%] right-[8%] w-12 h-12 border border-indigo-500/20 rounded-lg animate-float-slow"
-                        style={{ animationDelay: '2s' }}
-                    />
-                    <motion.div
-                        className="absolute bottom-[30%] left-[10%] w-20 h-20 border border-purple-500/20 rounded-full animate-float-slow"
-                        style={{ animationDelay: '4s' }}
-                    />
-                    <motion.div
-                        className="absolute bottom-[20%] right-[5%] w-10 h-10 border border-cyan-500/20 rotate-45 animate-float-slow"
-                        style={{ animationDelay: '1s' }}
-                    />
-                </div>
-
-                {/* Twinkling Stars */}
-                <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(30)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-white/30 rounded-full animate-twinkle"
-                            style={{
-                                top: `${Math.random() * 100}%`,
-                                left: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 5}s`,
-                                width: `${Math.random() * 3 + 1}px`,
-                                height: `${Math.random() * 3 + 1}px`,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Floating Tech Icons */}
-                <div className="absolute inset-0 pointer-events-none hidden lg:block">
-                    {['fa-react', 'fa-laravel', 'fa-node-js', 'fa-php', 'fa-database', 'fa-code'].map((icon, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute text-2xl text-cyan-500/10 animate-float-shape"
-                            style={{
-                                top: `${10 + Math.random() * 80}%`,
-                                left: `${10 + Math.random() * 80}%`,
-                                animationDelay: `${i * 2}s`,
-                            }}
-                        >
-                            <i className={`fa-brands ${icon}`} />
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Animated Grid Lines */}
-                <div className="absolute inset-0 pointer-events-none opacity-10">
-                    {[...Array(10)].map((_, i) => (
-                        <motion.div
-                            key={`h-${i}`}
-                            className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-                            style={{
-                                top: `${(i / 10) * 100}%`,
-                            }}
-                            animate={{
-                                opacity: [0.1, 0.3, 0.1],
-                            }}
-                            transition={{
-                                duration: 4,
-                                repeat: Infinity,
-                                delay: i * 0.3,
-                            }}
-                        />
-                    ))}
-                    {[...Array(10)].map((_, i) => (
-                        <motion.div
-                            key={`v-${i}`}
-                            className="absolute h-full w-px bg-gradient-to-b from-transparent via-cyan-500 to-transparent"
-                            style={{
-                                left: `${(i / 10) * 100}%`,
-                            }}
-                            animate={{
-                                opacity: [0.1, 0.3, 0.1],
-                            }}
-                            transition={{
-                                duration: 4,
-                                repeat: Infinity,
-                                delay: i * 0.3 + 2,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Particles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(20)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
-                            initial={{
-                                x: Math.random() * window.innerWidth,
-                                y: Math.random() * window.innerHeight,
-                            }}
-                            animate={{
-                                y: [null, Math.random() * window.innerHeight],
-                                x: [null, Math.random() * window.innerWidth],
-                                opacity: [0, 0.5, 0],
-                            }}
-                            transition={{
-                                duration: Math.random() * 15 + 10,
-                                repeat: Infinity,
-                                delay: Math.random() * 5,
-                                ease: "linear",
-                            }}
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                <div className="max-w-6xl mx-auto relative z-10">
-                    <motion.h2
-                        initial={{ opacity: 0, y: -30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent"
-                    >
-                        Contact Me
-                    <div className="w-50 mt-2 h-1 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto rounded-full"></div>
-                    </motion.h2>
-                    <div className="grid md:grid-cols-2 gap-6">
-
-                        {/* Left Side - Contact Info */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 flex flex-col h-full hover:border-cyan-500/30 transition-all duration-300"
-                        >
-                            <h3 className="text-2xl font-bold mb-6 text-white">
-                                Let's Connect
-                            </h3>
-
-                            <p className="text-slate-400 mb-6 leading-relaxed">
-                                I'm available for freelance projects, internships, and collaboration opportunities.
-                                Let's build something amazing together! Feel free to reach out anytime.
-                            </p>
-
-                            <div className="space-y-5 flex-1">
-                                <motion.div
-                                    className="flex items-center gap-4 group"
-                                    whileHover={{ x: 5 }}
-                                    transition={{ type: "spring", stiffness: 400 }}
-                                >
-                                    <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
-                                        <FaEnvelope className="text-cyan-400 text-lg" />
-                                    </div>
-                                    <div>
-                                        <p className="text-slate-400 text-xs">Email</p>
-                                        <span className="text-white text-sm group-hover:text-cyan-400 transition">
-                                            chaudharikrunal0223@gmail.com
-                                        </span>
-                                    </div>
-                                </motion.div>
-
-                                <motion.div
-                                    className="flex items-center gap-4 group"
-                                    whileHover={{ x: 5 }}
-                                    transition={{ type: "spring", stiffness: 400 }}
-                                >
-                                    <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
-                                        <FaPhone className="text-cyan-400 text-lg" />
-                                    </div>
-                                    <div>
-                                        <p className="text-slate-400 text-xs">Phone</p>
-                                        <span className="text-white text-sm group-hover:text-cyan-400 transition">
-                                            +91 63519 24667
-                                        </span>
-                                    </div>
-                                </motion.div>
-                            </div>
-
-                            {/* Social Links at Bottom */}
-                            <div className="mt-auto pt-8 border-t border-white/10">
-                                <p className="text-slate-400 text-sm mb-4">Connect on Social Media</p>
-                                <div className="flex gap-4 flex-wrap">
-                                    {[
-                                        { icon: FaLinkedin, link: "https://www.linkedin.com/in/krunal-chaudhari-2b9ab5354/" },
-                                        { icon: FaGithub, link: "https://github.com/Krunal-Chaudhari-0723" },
-                                        { icon: FaInstagram, link: "https://www.instagram.com/krunalchaudhari.dev" },
-                                        { icon: FaFacebook, link: "https://www.facebook.com/krunalchaudhari.dev" },
-                                        { icon: FaMedium, link: "https://medium.com/@chaudharikrunal0223" },
-                                    ].map((social, idx) => (
-                                        <motion.a
-                                            key={idx}
-                                            href={social.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            whileHover={{ y: -5, scale: 1.15, rotate: 5 }}
-                                            whileTap={{ scale: 0.9 }}
-                                            className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400 hover:bg-cyan-500 hover:text-white transition-all duration-300"
-                                        >
-                                            <social.icon />
-                                        </motion.a>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Right Side - Contact Form */}
-                        <motion.form
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            onSubmit={handleSubmit}
-                            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 space-y-4 hover:border-cyan-500/30 transition-all duration-300"
-                            noValidate
-                        >
-                            <h3 className="text-2xl font-bold mb-4 text-white">
-                                Send a Message
-                            </h3>
-
-                            {/* Success Message */}
-                            {success && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 p-3 rounded-xl text-sm text-center"
-                                >
-                                    ✅ Message sent successfully! I'll get back to you soon.
-                                </motion.div>
-                            )}
-
-                            {/* Submit Error */}
-                            {errors.submit && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="bg-red-500/20 border border-red-500/30 text-red-400 p-3 rounded-xl text-sm text-center"
-                                >
-                                    ❌ {errors.submit}
-                                </motion.div>
-                            )}
-
-                            {/* Name Field */}
-                            <div>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Your Name *"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className={`w-full bg-slate-900/80 border ${errors.name ? 'border-red-500' : 'border-slate-700'} p-4 rounded-xl outline-none text-white placeholder:text-slate-500 focus:border-cyan-400 transition`}
-                                />
-                                {errors.name && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: -5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-red-400 text-xs mt-1 ml-2"
-                                    >
-                                        {errors.name}
-                                    </motion.p>
-                                )}
-                            </div>
-
-                            {/* Email Field */}
-                            <div>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="Your Email *"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className={`w-full bg-slate-900/80 border ${errors.email ? 'border-red-500' : 'border-slate-700'} p-4 rounded-xl outline-none text-white placeholder:text-slate-500 focus:border-cyan-400 transition`}
-                                />
-                                {errors.email && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: -5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-red-400 text-xs mt-1 ml-2"
-                                    >
-                                        {errors.email}
-                                    </motion.p>
-                                )}
-                            </div>
-
-                            {/* Phone Field */}
-                            <div>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    placeholder="Your Phone Number *"
-                                    value={formData.phone}
-                                    onChange={handleChange}
-                                    className={`w-full bg-slate-900/80 border ${errors.phone ? 'border-red-500' : 'border-slate-700'} p-4 rounded-xl outline-none text-white placeholder:text-slate-500 focus:border-cyan-400 transition`}
-                                />
-                                {errors.phone && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: -5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-red-400 text-xs mt-1 ml-2"
-                                    >
-                                        {errors.phone}
-                                    </motion.p>
-                                )}
-                            </div>
-
-                            {/* Message Field */}
-                            <div>
-                                <textarea
-                                    rows="5"
-                                    name="message"
-                                    placeholder="Your Message *"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    className={`w-full bg-slate-900/80 border ${errors.message ? 'border-red-500' : 'border-slate-700'} p-4 rounded-xl outline-none text-white placeholder:text-slate-500 focus:border-cyan-400 transition resize-none`}
-                                />
-                                {errors.message && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: -5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-red-400 text-xs mt-1 ml-2"
-                                    >
-                                        {errors.message}
-                                    </motion.p>
-                                )}
-                            </div>
-
-                            {/* Submit Button */}
-                            <motion.button
-                                whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(6,182,212,0.3)" }}
-                                whileTap={{ scale: 0.98 }}
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-gradient-to-r from-cyan-500 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            <div className="grid gap-10 md:grid-cols-[1fr_1.2fr] md:gap-12">
+                {/* Contact details */}
+                <Reveal className="space-y-6">
+                    <div className="card rounded-2xl p-2">
+                        <div className="flex items-center gap-3 rounded-xl p-3">
+                            <FiMail className="shrink-0 text-zinc-500" />
+                            <a href={`mailto:${EMAIL}`} className="min-w-0 flex-1 truncate text-sm text-zinc-200 hover:text-brand-300">
+                                {EMAIL}
+                            </a>
+                            <button
+                                onClick={copyEmail}
+                                aria-label="Copy email address"
+                                className="shrink-0 cursor-pointer rounded-lg border border-white/10 p-2 text-zinc-400 transition-colors hover:text-zinc-100"
                             >
-                                {loading ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Sending...
-                                    </span>
-                                ) : 'Send Message'}
-                            </motion.button>
-
-                            <p className="text-slate-500 text-xs text-center pt-2">
-                                I'll respond within 24-48 hours
-                            </p>
-                        </motion.form>
+                                {copied ? <FiCheck className="text-emerald-400" /> : <FiCopy />}
+                            </button>
+                        </div>
+                        <div className="mx-3 border-t border-white/5" />
+                        <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="flex items-center gap-3 rounded-xl p-3 text-sm text-zinc-200 hover:text-brand-300">
+                            <FiPhone className="shrink-0 text-zinc-500" />
+                            {PHONE}
+                        </a>
                     </div>
-                </div>
-            </section>
-        </>
+
+                    <ul className="divide-y divide-white/5 border-y border-white/5">
+                        {socials.map(({ label, icon: Icon, link }) => (
+                            <li key={label}>
+                                <a
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center gap-3 py-3 text-sm text-zinc-400 transition-colors hover:text-zinc-100"
+                                >
+                                    <Icon className="text-base" />
+                                    {label}
+                                    <FiArrowUpRight className="ml-auto opacity-0 transition-opacity group-hover:opacity-100" />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </Reveal>
+
+                {/* Form */}
+                <Reveal delay={0.08}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className="space-y-4 card rounded-2xl p-5 md:p-6"
+                        noValidate
+                    >
+                        {success && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-center text-sm text-emerald-300"
+                                role="status"
+                            >
+                                Message sent! I'll get back to you soon.
+                            </motion.div>
+                        )}
+
+                        {errors.submit && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-center text-sm text-red-300"
+                                role="alert"
+                            >
+                                {errors.submit}
+                            </motion.div>
+                        )}
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            {fields.map((field) => (
+                                <div key={field.name} className={field.name === "phone" ? "sm:col-span-2" : ""}>
+                                    <label htmlFor={field.name} className="mb-1.5 block text-xs font-medium text-zinc-400">
+                                        {field.label}
+                                    </label>
+                                    <input
+                                        id={field.name}
+                                        type={field.type}
+                                        name={field.name}
+                                        placeholder={field.placeholder}
+                                        autoComplete={field.autoComplete}
+                                        value={formData[field.name]}
+                                        onChange={handleChange}
+                                        aria-invalid={!!errors[field.name]}
+                                        className={inputClass(errors[field.name])}
+                                    />
+                                    {errors[field.name] && <p className="mt-1 text-xs text-red-400">{errors[field.name]}</p>}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div>
+                            <label htmlFor="message" className="mb-1.5 block text-xs font-medium text-zinc-400">
+                                Message
+                            </label>
+                            <textarea
+                                id="message"
+                                rows="5"
+                                name="message"
+                                placeholder="Tell me about your project..."
+                                value={formData.message}
+                                onChange={handleChange}
+                                aria-invalid={!!errors.message}
+                                className={`${inputClass(errors.message)} resize-none`}
+                            />
+                            {errors.message && <p className="mt-1 text-xs text-red-400">{errors.message}</p>}
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 btn-primary rounded-xl px-5 py-3 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {loading ? (
+                                <>
+                                    <svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    Sending...
+                                </>
+                            ) : (
+                                <>
+                                    Send message <FiSend />
+                                </>
+                            )}
+                        </button>
+                    </form>
+                </Reveal>
+            </div>
+        </Section>
     );
 }
 

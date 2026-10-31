@@ -2,18 +2,29 @@
   {
     "title": "AttendIQ - Smart Attendance",
     "description": "Hackathon-winning (1st place) smart attendance & student engagement system for Bhagwan Mahavir University. Combines Face AI identity verification and campus location checks with engagement analytics, explainable academic-risk rules and AI recommendations across Admin, Teacher and Student portals.",
-    "tech": ["Next.js", "Face AI", "Geolocation", "AI Insights"],
+    "tech": [
+      "Next.js",
+      "Face AI",
+      "Geolocation",
+      "AI Insights"
+    ],
     "github": "",
     "demo": "https://attendiqs.vercel.app/",
     "image": "/src/assets/attendiq.png",
-    "achievement": "🏆 Hackathon Winner - 1st Place",
+    "achievement": "First Prize · BMU Hackathon",
     "challenges": "Building a single source of truth that marks attendance only after both face identity and campus-radius location are verified, then turning raw records into weighted engagement signals and explainable risk flags.",
     "featured": true
   },
   {
     "title": "Seliora FreeLance",
     "description": "A premium fullstack freelance platform built to connect clients and developers. Implements Razorpay payment gateway integration, Cloudinary media storage, and a robust admin panel.",
-    "tech": ["Next.js", "MongoDB", "Tailwind CSS", "Razorpay", "Cloudinary"],
+    "tech": [
+      "Next.js",
+      "MongoDB",
+      "Tailwind CSS",
+      "Razorpay",
+      "Cloudinary"
+    ],
     "github": "https://github.com/Krunal-Chaudhari-0723/seloria",
     "demo": "https://getseloria.vercel.app",
     "image": "/src/assets/seloria.png",
@@ -21,9 +32,45 @@
     "featured": true
   },
   {
+    "title": "Bright Paper Website",
+    "description": "Production B2B website for Bright Paper, a paper and packaging supplier serving India since 2007. Product catalog for duplex board and kraft paper, gallery, and quote and inquiry flows with WhatsApp integration.",
+    "tech": [
+      "React",
+      "Vite",
+      "React Router",
+      "WhatsApp"
+    ],
+    "github": "",
+    "demo": "https://brightpaper.co.in/",
+    "image": "/src/assets/brightpaper.png",
+    "challenges": "Presenting a large paper and board catalog clearly for B2B buyers and turning visits into inquiries through quote forms and WhatsApp.",
+    "featured": true
+  },
+  {
+    "title": "Freelance Studio Website",
+    "description": "Krunal's freelance web development site for businesses in Surat, covering services, selected work, pricing and process, with quote requests over WhatsApp.",
+    "tech": [
+      "React",
+      "Vite",
+      "Tailwind CSS",
+      "WhatsApp"
+    ],
+    "github": "",
+    "demo": "https://chaudharikrunal.me/",
+    "image": "/src/assets/chaudharikrunal.png",
+    "challenges": "Designing a conversion-focused site that explains services and pricing clearly and makes it easy to request a quote.",
+    "featured": false
+  },
+  {
     "title": "Food Delivery App",
     "description": "MERN Stack food delivery application with cart management, user authentication, restaurant browsing, and an interactive admin dashboard for order tracking and inventory.",
-    "tech": ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"],
+    "tech": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "Tailwind CSS"
+    ],
     "github": "https://github.com/Krunal-Chaudhari-0723/FoodDelivery",
     "demo": "https://krunalchaudhari-fooddel-frontend.netlify.app/",
     "image": "/src/assets/food.png",
@@ -33,11 +80,31 @@
   {
     "title": "Jadoo - Travels Website",
     "description": "Modern and responsive Tours & Travels landing platform designed to explore exotic destinations, tour packages, and travel deals. Features smooth scroll navigation and interactive UI elements.",
-    "tech": ["React", "Node.js", "JSON", "Tailwind CSS"],
+    "tech": [
+      "React",
+      "Node.js",
+      "JSON",
+      "Tailwind CSS"
+    ],
     "github": "https://github.com/Krunal-Chaudhari-0723/Technical-Task",
     "demo": "https://lovely-stardust-c4a5fb.netlify.app/",
     "image": "/src/assets/Jadoo.png",
     "challenges": "Structuring dynamic JSON loaders for destination details and achieving high performance loading times and responsive layouts across all mobile screen viewports.",
     "featured": false
+  },
+  {
+    "title": "Bright Paper Systems Portal",
+    "description": "Internal staff portal for Bright Paper with PIN-based sign-in for leave requests, support tickets and birthday reminders, plus push notifications on phone and desktop.",
+    "tech": [
+      "JavaScript",
+      "Firebase",
+      "Google Apps Script",
+      "Push Notifications"
+    ],
+    "github": "",
+    "demo": "https://brightpaper.github.io/system-portal/",
+    "image": "/src/assets/systemportal.png",
+    "challenges": "Keeping sign-in simple for shared office devices while delivering reliable push notifications for leave, tickets and birthdays.",
+    "featured": true
   }
 ]

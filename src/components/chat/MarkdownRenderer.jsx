@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MarkdownRenderer = ({ content = '' }) => {
   if (!content) return null;
 
@@ -7,7 +5,7 @@ const MarkdownRenderer = ({ content = '' }) => {
   const parts = content.split(/(```[\s\S]*?```)/g);
 
   return (
-    <div className="space-y-2 text-sm leading-relaxed text-slate-350 break-words font-sans">
+    <div className="space-y-2 text-sm leading-relaxed break-words">
       {parts.map((part, idx) => {
         // Code Block
         if (part.startsWith('```')) {
@@ -16,8 +14,8 @@ const MarkdownRenderer = ({ content = '' }) => {
           const code = match ? match[2] : part.slice(3, -3);
 
           return (
-            <pre key={idx} className="bg-black/40 border border-slate-700/50 rounded-lg p-3 overflow-x-auto text-[11px] font-mono text-cyan-400 my-2">
-              {lang && <span className="text-[9px] uppercase tracking-wider text-slate-500 block mb-1 font-sans">{lang}</span>}
+            <pre key={idx} className="bg-black/40 border border-white/10 rounded-xl p-3 overflow-x-auto text-[11px] font-mono text-brand-200 my-2">
+              {lang && <span className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-1 font-sans">{lang}</span>}
               <code>{code.trim()}</code>
             </pre>
           );
@@ -44,14 +42,14 @@ const MarkdownRenderer = ({ content = '' }) => {
 
               if (isBullet) {
                 return (
-                  <li key={lineIdx} className="ml-4 list-disc text-slate-300">
+                  <li key={lineIdx} className="ml-4 list-disc text-zinc-300 marker:text-brand-400">
                     <span>{processedContent}</span>
                   </li>
                 );
               }
 
               return (
-                <p key={lineIdx} className="text-slate-300">
+                <p key={lineIdx} className="text-zinc-300">
                   {processedContent}
                 </p>
               );
@@ -80,7 +78,7 @@ function parseInlineElements(text) {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyan-400 hover:text-cyan-300 hover:underline font-semibold"
+            className="text-brand-300 underline decoration-brand-400/40 underline-offset-2 hover:text-brand-200"
           >
             {label}
           </a>
@@ -105,7 +103,7 @@ function parseBoldAndCode(text, parentKey) {
       {parts.map((part, idx) => {
         if (part.startsWith('**') && part.endsWith('**')) {
           return (
-            <strong key={idx} className="font-bold text-white">
+            <strong key={idx} className="font-semibold text-zinc-50">
               {part.slice(2, -2)}
             </strong>
           );
@@ -114,7 +112,7 @@ function parseBoldAndCode(text, parentKey) {
           return (
             <code
               key={idx}
-              className="bg-slate-800/80 px-1.5 py-0.5 rounded text-[11px] font-mono text-cyan-400 border border-slate-700/30"
+              className="bg-white/[0.06] px-1.5 py-0.5 rounded text-[11px] font-mono text-brand-200 border border-white/10"
             >
               {part.slice(1, -1)}
             </code>

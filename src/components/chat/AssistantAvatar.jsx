@@ -1,14 +1,14 @@
 import Profile from '../../assets/new_profile.png';
 
-const AssistantAvatar = () => {
+// Profile photo inside a brand gradient ring
+const AssistantAvatar = ({ size = "h-7 w-7" }) => {
   return (
-    <div className="relative w-8 h-8 rounded-full border border-cyan-500/30 overflow-hidden shadow-md shadow-cyan-500/10 flex-shrink-0">
+    <div className={`${size} shrink-0 rounded-full bg-gradient-to-br from-brand-400 via-indigo-400 to-cyan-300 p-[1.5px]`}>
       <img
         src={Profile}
         alt="Krunal's AI Assistant"
-        className="w-full h-full object-cover"
+        className="h-full w-full rounded-full border border-zinc-950 object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-transparent" />
     </div>
   );
 };

@@ -8,14 +8,10 @@ const ChatWindow = lazy(() => import("./ChatWindow"));
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <>
-      {/* Floating Sparkle Trigger Button - Always Loaded */}
-      <ChatButton onClick={toggleChat} />
+      {/* Launcher - Always Loaded */}
+      <ChatButton isOpen={isOpen} onClick={() => setIsOpen((open) => !open)} />
 
       {/* Lazy Loaded Chat Window Container */}
       <AnimatePresence>

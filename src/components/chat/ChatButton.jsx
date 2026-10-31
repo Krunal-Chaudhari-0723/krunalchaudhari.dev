@@ -1,41 +1,47 @@
-import { motion } from "framer-motion";
-import { FaCommentDots } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { HiSparkles } from "react-icons/hi2";
+import { FiX } from "react-icons/fi";
 
-const ChatButton = ({ onClick }) => {
+// Floating launcher: "Ask AI" pill that turns into a close button while the chat is open
+const ChatButton = ({ isOpen, onClick }) => {
   return (
-    <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50">
-      {/* Pulsing Outer Rings */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0, 0.4] }}
-          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-          className="absolute inset-0 rounded-full bg-cyan-500/20 blur-sm"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.6, 1], opacity: [0.2, 0, 0.2] }}
-          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 1 }}
-          className="absolute inset-0 rounded-full bg-indigo-500/10 blur-md"
-        />
-      </div>
-
-      {/* Floating Action Button */}
+    <div className={`fixed bottom-5 right-5 z-50 md:bottom-8 md:right-8 ${isOpen ? "hidden md:block" : ""}`}>
       <motion.button
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        whileTap={{ scale: 0.9 }}
+        layout
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.96 }}
         onClick={onClick}
-        className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-slate-950/80 backdrop-blur-md shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 border border-white/10 hover:border-cyan-500/40 transition-all duration-350 cursor-pointer"
-        aria-label="Open AI Assistant"
+        aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
+        aria-expanded={isOpen}
+        className="btn-primary group relative flex h-12 cursor-pointer items-center gap-2 overflow-hidden rounded-full pl-4 pr-5 text-sm font-medium"
+        style={isOpen ? { paddingRight: "1rem" } : undefined}
       >
-        {/* Soft rotating background aura */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-500/10 to-indigo-500/10 group-hover:from-cyan-500/20 group-hover:to-indigo-500/20 animate-spin-slow transition-all duration-350" />
-        
-        {/* Border glow */}
-        <div className="absolute inset-0 rounded-full border border-cyan-500/20 group-hover:border-cyan-400/50 transition-all duration-350" />
-
-        {/* Message Symbol */}
-        <div className="relative transform group-hover:scale-110 transition duration-300">
-          <FaCommentDots className="w-6 h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
-        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          {isOpen ? (
+            <motion.span
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex"
+            >
+              <FiX className="text-lg" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="open"
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.6, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center gap-2"
+            >
+              <HiSparkles className="text-base transition-transform duration-300 group-hover:rotate-12" />
+              Ask AI
+            </motion.span>
+          )}
+        </AnimatePresence>
       </motion.button>
     </div>
   );

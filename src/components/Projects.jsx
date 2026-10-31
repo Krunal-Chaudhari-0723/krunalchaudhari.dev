@@ -1,424 +1,237 @@
-// Projects.jsx - With Enhanced Background Animations
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+// Projects.jsx - Featured case study + project grid
+import { FiArrowUpRight, FiAward, FiCheck, FiLock } from "react-icons/fi";
 import { FaGithub } from "react-icons/fa";
-import { HiEye } from "react-icons/hi";
-import Food from '../assets/food.png';
-import Jadoo from '../assets/Jadoo.png';
-import Seliora from '../assets/seloria.png';
-import AttendIQ from '../assets/attendiq.png';
+import Food from "../assets/food.png";
+import Jadoo from "../assets/Jadoo.png";
+import Seliora from "../assets/seloria.png";
+import AttendIQ from "../assets/attendiq.png";
+import BrightPaper from "../assets/brightpaper.png";
+import SystemPortal from "../assets/systemportal.png";
+import FreelanceSite from "../assets/chaudharikrunal.png";
+import { Section, SectionHeader, Reveal, Tag } from "./ui";
 
-// Add this CSS for custom animations
-const styles = `
-  @keyframes float-slow {
-    0%, 100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-30px) rotate(5deg);
-    }
-  }
-  
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.8; }
-  }
-  
-  @keyframes float-shape {
-    0%, 100% { 
-      transform: translateY(0px) rotate(0deg) scale(1);
-    }
-    33% { 
-      transform: translateY(-20px) rotate(120deg) scale(1.1);
-    }
-    66% { 
-      transform: translateY(10px) rotate(240deg) scale(0.9);
-    }
-  }
-  
-  .animate-float-slow {
-    animation: float-slow 8s ease-in-out infinite;
-  }
-  
-  .animate-twinkle {
-    animation: twinkle 3s ease-in-out infinite;
-  }
-  
-  .animate-float-shape {
-    animation: float-shape 15s ease-in-out infinite;
-  }
-`;
+const featured = {
+    title: "AttendIQ",
+    tagline: "Smart attendance & student engagement platform",
+    description:
+        "Built for Bhagwan Mahavir University. Attendance is marked only after a student's identity and physical presence are both verified. The records then feed engagement scores, academic-risk flags and AI recommendations.",
+    highlights: [
+        "Face AI identity verification",
+        "Campus geofence check before marking attendance",
+        "Explainable academic-risk rules with AI recommendations",
+        "Separate Admin, Teacher and Student portals",
+    ],
+    tech: ["Next.js", "Face AI", "Geolocation", "AI Insights"],
+    image: AttendIQ,
+    github: "",
+    demo: "https://attendiqs.vercel.app/",
+    achievement: "First Prize · BMU Hackathon",
+};
 
 const projects = [
     {
-        title: "AttendIQ - Smart Attendance",
-        description: "Smart attendance & student engagement system for Bhagwan Mahavir University. Verifies identity with Face AI and campus presence with location checks, then turns records into engagement insights, academic risk flags and AI recommendations, with Admin, Teacher and Student portals.",
-        tech: ["Next.js", "Face AI", "Geolocation", "AI Insights"],
-        image: AttendIQ,
-        github: "",
-        demo: "https://attendiqs.vercel.app/",
-        featured: true,
-        achievement: "🏆 Hackathon Winner - 1st Place"
-    },
-    {
-        title: "Seliora FreeLance",
-        description: "This is the fullsatck website using Next js and MongoDB for database , Claudinary for storage, In this full stack website i use Razorpay for payment integration",
-        tech: ["Next.js", "MongoDb", "Tailwind",  "Razorpay"],
+        title: "Seliora Freelance",
+        description:
+            "Full stack freelance platform connecting clients and developers, with Razorpay payments, Cloudinary media storage and an admin panel.",
+        tech: ["Next.js", "MongoDB", "Tailwind", "Razorpay"],
         image: Seliora,
         github: "https://github.com/Krunal-Chaudhari-0723/seloria",
         demo: "https://www.getseloria.com/",
-        featured: true
+    },
+    {
+        title: "Bright Paper Website",
+        label: "Production · Bright Paper",
+        description:
+            "B2B website for a paper and packaging supplier serving India since 2007, with a product catalog for duplex board and kraft paper, a gallery, and quote and inquiry flows with WhatsApp integration.",
+        tech: ["React", "Vite", "React Router", "WhatsApp"],
+        image: BrightPaper,
+        github: "",
+        demo: "https://brightpaper.co.in/",
+    },
+    {
+        title: "Freelance Studio Website",
+        label: "Freelance",
+        description:
+            "My freelance web development site for businesses in Surat, covering services, selected work, pricing and process, with quote requests over WhatsApp.",
+        tech: ["React", "Vite", "Tailwind CSS", "WhatsApp"],
+        image: FreelanceSite,
+        github: "",
+        demo: "https://chaudharikrunal.me/",
     },
     {
         title: "Food Delivery App",
-        description: "MERN Stack food delivery application with cart, authentication and admin panel. Users can browse restaurants, add items to cart, and place orders seamlessly.",
+        description:
+            "MERN food delivery app with restaurant browsing, cart, JWT authentication and an admin dashboard for orders and inventory.",
         tech: ["React", "Node.js", "MongoDB", "Express"],
         image: Food,
         github: "https://github.com/Krunal-Chaudhari-0723/FoodDelivery",
         demo: "https://krunalchaudhari-fooddel-frontend.netlify.app/",
-        featured: true
     },
     {
-        title: "Jadoo - Travels Website",
-        description: "Modern & responsive Tours & Travels web app using React.js for exploring destinations, packages, and deals. Interactive platform with dynamic UI components and seamless user experience.",
-        tech: ["React", "Node", "JSON", "Tailwind"],
+        title: "Jadoo Travels",
+        description:
+            "Responsive tours & travels site for exploring destinations, packages and deals, driven by dynamic JSON content.",
+        tech: ["React", "Node.js", "JSON", "Tailwind"],
         image: Jadoo,
         github: "https://github.com/Krunal-Chaudhari-0723/Technical-Task",
         demo: "https://lovely-stardust-c4a5fb.netlify.app/",
-        featured: false
+    },
+    {
+        title: "Bright Paper Systems Portal",
+        label: "Internal tool · Bright Paper",
+        description:
+            "Staff portal with PIN-based sign-in that handles leave requests, support tickets and birthday reminders, with push notifications on phone and desktop.",
+        tech: ["JavaScript", "Firebase", "Apps Script", "Push Notifications"],
+        image: SystemPortal,
+        github: "",
+        demo: "https://brightpaper.github.io/system-portal/",
     },
 ];
 
-function Projects() {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            setMousePosition({
-                x: (e.clientX / window.innerWidth) * 100,
-                y: (e.clientY / window.innerHeight) * 100,
-            });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    const openLink = (url) => {
-        if (url) window.open(url, "_blank", "noopener,noreferrer");
-    };
-
+function ProjectLinks({ github, demo }) {
     return (
-        <>
-            <style>{styles}</style>
+        <div className="flex items-center gap-5 text-sm">
+            {demo && (
+                <a
+                    href={demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-medium text-zinc-100 transition-colors hover:text-brand-300"
+                >
+                    Live demo <FiArrowUpRight />
+                </a>
+            )}
+            {github && (
+                <a
+                    href={github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-zinc-400 transition-colors hover:text-zinc-100"
+                >
+                    <FaGithub /> Source
+                </a>
+            )}
+        </div>
+    );
+}
 
-            <section
-                id="projects"
-                className="relative bg-[#0a0a1a] text-white py-28 px-6 overflow-hidden"
-            >
-                {/* Enhanced Background */}
-                <div className="absolute inset-0 bg-[#0a0a1a]" />
+function Projects() {
+    return (
+        <Section id="projects" glow="left">
+            <SectionHeader
+                index="02"
+                eyebrow="Work"
+                title="Selected projects"
+                description="Things I have designed, built and shipped, from a hackathon winner to production sites and internal tools."
+            />
 
-                {/* Animated Gradient Orbs */}
-                <motion.div
-                    className="absolute top-20 right-10 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-3xl"
-                    animate={{
-                        x: mousePosition.x * 0.3 - 20,
-                        y: mousePosition.y * 0.3 - 20,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 1,
-                    }}
-                />
-
-                <motion.div
-                    className="absolute bottom-20 left-10 w-[500px] h-[500px] rounded-full bg-indigo-500/10 blur-3xl"
-                    animate={{
-                        x: (mousePosition.x - 50) * -0.2,
-                        y: (mousePosition.y - 50) * -0.2,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 0.8,
-                    }}
-                />
-
-                <motion.div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-3xl"
-                    animate={{
-                        x: mousePosition.x * 0.1 - 30,
-                        y: mousePosition.y * 0.1 - 30,
-                    }}
-                    transition={{
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 50,
-                        mass: 1.2,
-                    }}
-                />
-
-                {/* Floating Shapes */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <motion.div
-                        className="absolute top-[15%] left-[5%] w-16 h-16 border border-cyan-500/20 rounded-full animate-float-slow"
-                        style={{ animationDelay: '0s' }}
-                    />
-                    <motion.div
-                        className="absolute top-[25%] right-[8%] w-12 h-12 border border-indigo-500/20 rounded-lg animate-float-slow"
-                        style={{ animationDelay: '2s' }}
-                    />
-                    <motion.div
-                        className="absolute bottom-[30%] left-[10%] w-20 h-20 border border-purple-500/20 rounded-full animate-float-slow"
-                        style={{ animationDelay: '4s' }}
-                    />
-                    <motion.div
-                        className="absolute bottom-[20%] right-[5%] w-10 h-10 border border-cyan-500/20 rotate-45 animate-float-slow"
-                        style={{ animationDelay: '1s' }}
-                    />
-                </div>
-
-                {/* Twinkling Stars */}
-                <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(30)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-white/30 rounded-full animate-twinkle"
-                            style={{
-                                top: `${Math.random() * 100}%`,
-                                left: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 5}s`,
-                                width: `${Math.random() * 3 + 1}px`,
-                                height: `${Math.random() * 3 + 1}px`,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Floating Tech Icons */}
-                <div className="absolute inset-0 pointer-events-none hidden lg:block">
-                    {['fa-react', 'fa-laravel', 'fa-node-js', 'fa-php', 'fa-database', 'fa-code'].map((icon, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute text-2xl text-cyan-500/10 animate-float-shape"
-                            style={{
-                                top: `${10 + Math.random() * 80}%`,
-                                left: `${10 + Math.random() * 80}%`,
-                                animationDelay: `${i * 2}s`,
-                            }}
-                        >
-                            <i className={`fa-brands ${icon}`} />
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Animated Grid Lines */}
-                <div className="absolute inset-0 pointer-events-none opacity-10">
-                    {[...Array(10)].map((_, i) => (
-                        <motion.div
-                            key={`h-${i}`}
-                            className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
-                            style={{
-                                top: `${(i / 10) * 100}%`,
-                            }}
-                            animate={{
-                                opacity: [0.1, 0.3, 0.1],
-                            }}
-                            transition={{
-                                duration: 4,
-                                repeat: Infinity,
-                                delay: i * 0.3,
-                            }}
-                        />
-                    ))}
-                    {[...Array(10)].map((_, i) => (
-                        <motion.div
-                            key={`v-${i}`}
-                            className="absolute h-full w-px bg-gradient-to-b from-transparent via-cyan-500 to-transparent"
-                            style={{
-                                left: `${(i / 10) * 100}%`,
-                            }}
-                            animate={{
-                                opacity: [0.1, 0.3, 0.1],
-                            }}
-                            transition={{
-                                duration: 4,
-                                repeat: Infinity,
-                                delay: i * 0.3 + 2,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Particles */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(20)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
-                            initial={{
-                                x: Math.random() * window.innerWidth,
-                                y: Math.random() * window.innerHeight,
-                            }}
-                            animate={{
-                                y: [null, Math.random() * window.innerHeight],
-                                x: [null, Math.random() * window.innerWidth],
-                                opacity: [0, 0.5, 0],
-                            }}
-                            transition={{
-                                duration: Math.random() * 15 + 10,
-                                repeat: Infinity,
-                                delay: Math.random() * 5,
-                                ease: "linear",
-                            }}
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                <div className="max-w-6xl mx-auto relative z-10">
-                    {/* Header */}
-                    <motion.div
-                        initial={{ opacity: 0, y: -30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="text-center mb-8"
+            {/* Featured */}
+            <Reveal>
+                <article className="card card-featured group grid overflow-hidden rounded-2xl md:grid-cols-[1.15fr_1fr]">
+                    <a
+                        href={featured.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative flex items-center overflow-hidden border-b border-white/10 bg-gradient-to-br from-brand-600/30 via-zinc-950 to-cyan-500/15 p-5 sm:p-8 md:border-b-0 md:border-r"
                     >
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
-                            <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                            <span className="text-cyan-400 text-xs font-medium tracking-wide">My Portfolio</span>
+                        <div className="bg-grid pointer-events-none absolute inset-0" />
+                        <div className="pointer-events-none absolute -bottom-20 left-1/2 h-48 w-3/4 -translate-x-1/2 rounded-full bg-brand-500/30 blur-[80px]" />
+
+                        {/* Browser window mockup */}
+                        <div className="relative w-full overflow-hidden rounded-xl border border-white/15 bg-zinc-900 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.8)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-[1.015]">
+                            <div className="flex items-center gap-3 border-b border-white/10 bg-zinc-900 px-3 py-2">
+                                <div className="flex gap-1.5">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                                </div>
+                                <div className="mx-auto flex min-w-0 items-center gap-1.5 truncate rounded-md bg-white/5 px-3 py-0.5 font-mono text-[11px] text-zinc-400">
+                                    <FiLock className="shrink-0 text-[10px]" />
+                                    {new URL(featured.demo).hostname}
+                                </div>
+                                <span className="w-[42px]" />
+                            </div>
+                            <img
+                                src={featured.image}
+                                alt={`${featured.title} screenshot`}
+                                className="aspect-[16/10] w-full object-cover object-top"
+                            />
+                        </div>
+                    </a>
+
+                    <div className="flex flex-col p-6 md:p-8">
+                        <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 text-xs font-medium text-amber-300">
+                            <FiAward /> {featured.achievement}
+                        </span>
+
+                        <h3 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-50">{featured.title}</h3>
+                        <p className="mt-1 text-sm text-zinc-500">{featured.tagline}</p>
+                        <p className="mt-4 text-sm leading-relaxed text-zinc-400">{featured.description}</p>
+
+                        <ul className="mt-5 space-y-2">
+                            {featured.highlights.map((item) => (
+                                <li key={item} className="flex items-start gap-2 text-sm text-zinc-300">
+                                    <FiCheck className="mt-0.5 shrink-0 text-brand-400" />
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <div className="mt-6 flex flex-wrap gap-1.5">
+                            {featured.tech.map((tech) => <Tag key={tech}>{tech}</Tag>)}
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-indigo-500 bg-clip-text text-transparent">
-                            Featured Projects
-                        </h2>
-
-                        <div className="w-92 h-0.5 bg-gradient-to-r from-cyan-400 to-indigo-500 mx-auto mt-4 rounded-full" />
-
-                        <p className="text-slate-400 text-sm max-w-xl mx-auto mt-4 leading-relaxed">
-                            Here are some of my recent projects that showcase my skills and expertise
-                        </p>
-                    </motion.div>
-
-                    {/* Projects Grid - 3 Columns */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.45, delay: index * 0.1 }}
-                                whileHover={{ y: -8, scale: 1.01 }}
-                                className="group relative bg-slate-800/30 border border-slate-700/40 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 shadow-lg hover:shadow-cyan-500/20"
-                            >
-                                {/* Image */}
-                                <div className="relative overflow-hidden h-52">
-                                    <img
-                                        src={project.image}
-                                        alt={project.title}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                    {project.achievement && (
-                                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-semibold tracking-wide shadow-lg shadow-amber-500/30">
-                                            {project.achievement}
-                                        </span>
-                                    )}
-
-                                    {project.featured && (
-                                        <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-cyan-500 text-white text-[10px] font-semibold tracking-wider uppercase shadow">
-                                            Featured
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-5">
-                                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-200">
-                                        {project.title}
-                                    </h3>
-
-                                    <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                                        {project.description}
-                                    </p>
-
-                                    {/* Tech tags */}
-                                    <div className="flex flex-wrap gap-2 mb-5">
-                                        {project.tech.map((tech, i) => (
-                                            <span
-                                                key={i}
-                                                className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-all duration-200"
-                                            >
-                                                {tech}
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    {/* Buttons */}
-                                    <div className="flex gap-3">
-                                        {project.github && (
-                                        <motion.button
-                                            whileHover={{ scale: 1.05, y: -2 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            onClick={() => openLink(project.github)}
-                                            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600/40 text-slate-300 text-sm font-medium hover:bg-slate-700 hover:border-slate-500/60 hover:text-white transition-all duration-200 cursor-pointer"
-                                        >
-                                            <FaGithub className="text-sm" />
-                                            GitHub
-                                        </motion.button>
-                                        )}
-
-                                        <motion.button
-                                            whileHover={{ scale: 1.05, y: -2 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            onClick={() => openLink(project.demo)}
-                                            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-sm font-medium hover:from-cyan-400 hover:to-indigo-500 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-200 cursor-pointer"
-                                        >
-                                            <HiEye className="text-sm" />
-                                            Live Demo
-                                        </motion.button>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                        <div className="mt-auto pt-6">
+                            <ProjectLinks github={featured.github} demo={featured.demo} />
+                        </div>
                     </div>
+                </article>
+            </Reveal>
 
-                    {/* View More */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="text-center mt-8"
-                    >
-                        <motion.a
-                            href="https://github.com/krunal-chaudhari-0723"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.05, y: -3 }}
-                            whileTap={{ scale: 0.97 }}
-                            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-cyan-500/40 text-cyan-400 text-sm font-medium hover:bg-cyan-500/10 hover:border-cyan-500/60 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-200"
-                        >
-                            <FaGithub className="text-base" />
-                            View More on GitHub
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </motion.a>
-                    </motion.div>
-                </div>
-            </section>
-        </>
+            {/* Grid */}
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {projects.map((project, index) => (
+                    <Reveal key={project.title} delay={index * 0.06}>
+                        <article className="group flex h-full flex-col overflow-hidden card rounded-2xl transition-transform duration-300 hover:-translate-y-1">
+                            <div className="relative overflow-hidden border-b border-white/10 bg-zinc-900">
+                                {project.label && (
+                                    <span className="absolute left-3 top-3 z-10 rounded-full border border-white/15 bg-zinc-950/80 px-2.5 py-1 text-[11px] font-medium text-zinc-200 backdrop-blur-md">
+                                        {project.label}
+                                    </span>
+                                )}
+                                <img
+                                    src={project.image}
+                                    alt={`${project.title} screenshot`}
+                                    loading="lazy"
+                                    className="aspect-[16/10] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+                                />
+                            </div>
+                            <div className="flex flex-1 flex-col p-5">
+                                <h3 className="font-semibold text-zinc-50">{project.title}</h3>
+                                <p className="mt-2 text-sm leading-relaxed text-zinc-400">{project.description}</p>
+                                <div className="mt-4 flex flex-wrap gap-1.5">
+                                    {project.tech.map((tech) => <Tag key={tech}>{tech}</Tag>)}
+                                </div>
+                                <div className="mt-auto pt-5">
+                                    <ProjectLinks github={project.github} demo={project.demo} />
+                                </div>
+                            </div>
+                        </article>
+                    </Reveal>
+                ))}
+            </div>
+
+            <Reveal className="mt-10 text-center">
+                <a
+                    href="https://github.com/krunal-chaudhari-0723"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-zinc-100"
+                >
+                    <FaGithub /> More on GitHub <FiArrowUpRight />
+                </a>
+            </Reveal>
+        </Section>
     );
 }
 

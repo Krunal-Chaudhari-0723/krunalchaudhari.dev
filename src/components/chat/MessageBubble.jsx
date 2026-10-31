@@ -3,20 +3,18 @@ import { motion } from "framer-motion";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ProjectCard from "./ProjectCard";
 import AssistantAvatar from "./AssistantAvatar";
+import myCv from "../../assets/Krunal-Full Stack.pdf";
 import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaFilePdf,
-  FaDownload,
-  FaLinkedin,
-  FaGithub,
-  FaInstagram,
-  FaMedium,
-  FaFacebook,
-  FaCopy,
-  FaCheck
-} from "react-icons/fa";
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiDownload,
+  FiCopy,
+  FiCheck,
+  FiFileText,
+  FiArrowUpRight,
+} from "react-icons/fi";
+import { FaLinkedin, FaGithub, FaInstagram, FaMedium, FaFacebook } from "react-icons/fa";
 
 const socialIcons = {
   LinkedIn: FaLinkedin,
@@ -26,10 +24,24 @@ const socialIcons = {
   Facebook: FaFacebook,
 };
 
-const MessageBubble = ({ message }) => {
+const timelineTitles = {
+  experience: "Work history",
+  education: "Education",
+  achievements: "Achievements & certifications",
+};
+
+// Shared surface for the structured cards inside assistant replies
+const Panel = ({ title, children, className = "" }) => (
+  <div className={`rounded-2xl border border-white/10 bg-white/[0.03] p-4 ${className}`}>
+    {title && <h4 className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-500">{title}</h4>}
+    {children}
+  </div>
+);
+
+const MessageBubble = ({ message, isStreaming }) => {
   const { role, content, type, data } = message;
   const isAssistant = role === "assistant";
-  
+
   const [copiedText, setCopiedText] = useState(null);
 
   const handleCopy = (text, typeName) => {
@@ -38,178 +50,140 @@ const MessageBubble = ({ message }) => {
     setTimeout(() => setCopiedText(null), 2000);
   };
 
+  if (!isAssistant) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex justify-end py-1.5"
+      >
+        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-gradient-to-br from-brand-500 to-indigo-600 px-4 py-2.5 text-sm leading-relaxed text-white shadow-lg shadow-brand-900/30">
+          {content}
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`flex gap-3 w-full my-3 ${isAssistant ? "justify-start" : "justify-end"}`}
+      className="group flex gap-3 py-2"
     >
-      {isAssistant && <AssistantAvatar />}
+      <AssistantAvatar />
 
-      <div className="flex flex-col max-w-[80%] gap-1.5">
+      <div className="min-w-0 flex-1 space-y-3 pt-0.5">
         {/* Main Text Content */}
         {content && (
-          <div
-            className={`px-4 py-3 rounded-2xl backdrop-blur-md shadow-md shadow-black/10 border text-slate-200 text-sm leading-relaxed
-              ${
-                isAssistant
-                  ? "bg-slate-800/40 border-slate-700/50 rounded-tl-none"
-                  : "bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 border-cyan-500/30 rounded-tr-none text-white"
-              }`}
-          >
+          <div className="text-sm leading-relaxed text-zinc-300">
             <MarkdownRenderer content={content} />
+            {isStreaming && <span className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-brand-300" />}
           </div>
         )}
 
         {/* Structured Custom UI Components */}
-        {isAssistant && type && (
-          <div className="w-full mt-1.5">
-            {/* 1. PROJECT_CARD (Projects list grid) */}
+        {type && (
+          <div className="w-full">
+            {/* 1. Projects carousel */}
             {type === "projects" && Array.isArray(data) && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-                {data.map((project, idx) => (
-                  <ProjectCard key={idx} project={project} />
+              <div className="no-scrollbar -mr-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pr-4">
+                {data.map((project) => (
+                  <ProjectCard key={project.title} project={project} />
                 ))}
               </div>
             )}
 
-            {/* 2. CONTACT_CARD */}
+            {/* 2. Contact card */}
             {type === "contact" && data && (
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-xl p-4 shadow-lg shadow-black/40 w-full max-w-sm hover:border-cyan-500/30 transition-all duration-300">
-                <h4 className="text-white font-bold text-xs mb-3.5 border-b border-white/10 pb-2 uppercase tracking-widest text-cyan-400">
-                  Contact Details
-                </h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between group/item">
-                    <a
-                      href={`mailto:${data.email}`}
-                      className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 text-xs transition duration-200"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                        <FaEnvelope className="text-cyan-400" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-wider">Email</p>
-                        <span className="font-semibold text-slate-200">{data.email}</span>
-                      </div>
-                    </a>
-                    <button
-                      onClick={() => handleCopy(data.email, "email")}
-                      title="Copy email to clipboard"
-                      className="p-1.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-400 transition duration-200 cursor-pointer ml-2 border border-transparent hover:border-cyan-500/20"
-                    >
-                      {copiedText === "email" ? <FaCheck className="text-[10px] text-emerald-400" /> : <FaCopy className="text-[10px]" />}
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between group/item">
-                    <a
-                      href={`tel:${data.phone}`}
-                      className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 text-xs transition duration-200"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                        <FaPhone className="text-cyan-400" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-slate-500 uppercase tracking-wider">Phone</p>
-                        <span className="font-semibold text-slate-200">{data.phone}</span>
-                      </div>
-                    </a>
-                    <button
-                      onClick={() => handleCopy(data.phone, "phone")}
-                      title="Copy phone to clipboard"
-                      className="p-1.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-400 transition duration-200 cursor-pointer ml-2 border border-transparent hover:border-cyan-500/20"
-                    >
-                      {copiedText === "phone" ? <FaCheck className="text-[10px] text-emerald-400" /> : <FaCopy className="text-[10px]" />}
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-slate-300 text-xs">
-                    <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                      <FaMapMarkerAlt className="text-cyan-400" />
+              <Panel title="Contact">
+                <div className="space-y-1">
+                  {[
+                    { key: "email", icon: FiMail, label: data.email, href: `mailto:${data.email}` },
+                    { key: "phone", icon: FiPhone, label: data.phone, href: `tel:${data.phone}` },
+                  ].map(({ key, icon: Icon, label, href }) => (
+                    <div key={key} className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/[0.04]">
+                      <Icon className="shrink-0 text-zinc-500" />
+                      <a href={href} className="min-w-0 flex-1 truncate text-sm text-zinc-200 hover:text-brand-300">
+                        {label}
+                      </a>
+                      <button
+                        onClick={() => handleCopy(label, key)}
+                        aria-label={`Copy ${key}`}
+                        className="cursor-pointer rounded-md p-1.5 text-zinc-500 transition-colors hover:bg-white/5 hover:text-zinc-100"
+                      >
+                        {copiedText === key ? <FiCheck className="text-xs text-emerald-400" /> : <FiCopy className="text-xs" />}
+                      </button>
                     </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">Location</p>
-                      <span className="font-semibold text-slate-200">{data.location}</span>
-                    </div>
+                  ))}
+                  <div className="flex items-center gap-3 px-2 py-2 text-sm text-zinc-400">
+                    <FiMapPin className="shrink-0 text-zinc-500" />
+                    {data.location}
                   </div>
                 </div>
 
                 {data.availability && (
-                  <div className="mt-3.5 pt-3 border-t border-white/5 flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                    </span>
-                    <span className="text-slate-400 text-[10px] leading-snug">{data.availability}</span>
-                  </div>
+                  <p className="mt-2 flex items-start gap-2 border-t border-white/5 pt-3 text-xs leading-relaxed text-zinc-400">
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                    {data.availability}
+                  </p>
                 )}
-              </div>
+              </Panel>
             )}
 
-            {/* 3. DOWNLOAD_BUTTON (Resume download) */}
+            {/* 3. Resume download */}
             {type === "resume" && data && (
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-xl p-4 shadow-lg shadow-black/40 w-full max-w-xs hover:border-cyan-500/30 transition-all duration-300 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 text-lg flex-shrink-0">
-                  <FaFilePdf />
+              <a
+                href={myCv}
+                download={data.resumeName || "Krunal_Chaudhari_Resume.pdf"}
+                className="group/resume flex max-w-xs items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3 transition-colors hover:border-brand-400/40"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-400 ring-1 ring-inset ring-red-500/20">
+                  <FiFileText />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-xs font-semibold truncate">{data.resumeName || "Krunal's Resume"}</p>
-                  <p className="text-[10px] text-slate-500">PDF Document</p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-zinc-100">{data.resumeName || "Krunal's Resume"}</p>
+                  <p className="text-xs text-zinc-500">PDF · Full Stack Developer (MERN)</p>
                 </div>
-                <a
-                  href={data.resumePath}
-                  download={data.resumeName}
-                  className="w-8 h-8 rounded-full bg-cyan-500 hover:bg-cyan-400 text-white flex items-center justify-center transition shadow-md shadow-cyan-500/25 cursor-pointer"
-                >
-                  <FaDownload className="text-xs" />
-                </a>
-              </div>
+                <span className="btn-primary flex h-8 w-8 items-center justify-center rounded-full">
+                  <FiDownload className="text-xs" />
+                </span>
+              </a>
             )}
 
-            {/* 4. BUTTON_GROUP / SOCIAL_CARD / LINK_CARD */}
+            {/* 4. Social links */}
             {type === "links" && Array.isArray(data) && (
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-xl p-4 shadow-lg shadow-black/40 w-full max-w-sm hover:border-cyan-500/30 transition-all duration-300">
-                <h4 className="text-white font-bold text-xs mb-3.5 border-b border-white/10 pb-2 uppercase tracking-widest text-cyan-400">
-                  Connect & Socials
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {data.map((social, idx) => {
-                    const Icon = socialIcons[social.platform] || FaGithub;
-                    return (
-                      <a
-                        key={idx}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800 hover:border-cyan-500/30 text-slate-300 hover:text-cyan-400 text-xs transition duration-200"
-                      >
-                        <Icon className="text-sm" />
-                        <span>{social.platform}</span>
-                      </a>
-                    );
-                  })}
-                </div>
+              <div className="flex flex-wrap gap-2">
+                {data.map((social) => {
+                  const Icon = socialIcons[social.platform] || FaGithub;
+                  return (
+                    <a
+                      key={social.platform}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-zinc-300 transition-colors hover:border-brand-400/40 hover:text-zinc-50"
+                    >
+                      <Icon className="text-sm" />
+                      {social.platform}
+                      <FiArrowUpRight className="text-zinc-500" />
+                    </a>
+                  );
+                })}
               </div>
             )}
 
-            {/* 5. SKILLS_GRID */}
+            {/* 5. Skills grid */}
             {type === "skills" && data && data.categories && (
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-xl p-4 shadow-lg shadow-black/40 w-full hover:border-cyan-500/30 transition-all duration-300">
-                <h4 className="text-white font-bold text-xs mb-3.5 border-b border-white/10 pb-2 uppercase tracking-widest text-cyan-400">
-                  Tech Stack Grouped
-                </h4>
-                <div className="space-y-3.5">
+              <Panel title="Tech stack">
+                <div className="space-y-3">
                   {Object.entries(data.categories).map(([category, skillList]) => (
                     <div key={category}>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">
-                        {category}
-                      </span>
+                      <span className="mb-1.5 block text-xs text-zinc-400">{category}</span>
                       <div className="flex flex-wrap gap-1.5">
-                        {skillList.map((skill, index) => (
+                        {skillList.map((skill) => (
                           <span
-                            key={index}
-                            className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-slate-950 border border-white/5 text-slate-300 hover:text-cyan-300 hover:border-cyan-500/30 hover:shadow-[0_0_8px_rgba(34,211,238,0.15)] transition duration-200"
+                            key={skill}
+                            className="rounded-md border border-brand-400/15 bg-brand-400/[0.07] px-2 py-0.5 font-mono text-[11px] text-brand-200/90"
                           >
                             {skill}
                           </span>
@@ -218,41 +192,48 @@ const MessageBubble = ({ message }) => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Panel>
             )}
 
-            {/* 6. TIMELINE (Experience, Education, achievements) */}
-            {(type === "experience" || type === "education" || type === "achievements") && Array.isArray(data) && (
-              <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-xl p-4 shadow-lg shadow-black/40 w-full hover:border-cyan-500/30 transition-all duration-300">
-                <h4 className="text-white font-bold text-xs mb-3.5 border-b border-white/10 pb-2 uppercase tracking-widest text-cyan-400 flex items-center justify-between">
-                  <span>{type === "experience" ? "Work History" : type === "education" ? "Education Journey" : "Certifications & Awards"}</span>
-                  <span className="text-[8px] px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 font-bold tracking-widest">Timeline</span>
-                </h4>
-                <div className="relative border-l border-cyan-500/25 pl-4 space-y-5 ml-2">
+            {/* 6. Timeline (experience, education, achievements) */}
+            {timelineTitles[type] && Array.isArray(data) && (
+              <Panel title={timelineTitles[type]}>
+                <ol className="relative ml-1 space-y-4 border-l border-white/10 pl-4">
                   {data.map((item, index) => (
-                    <div key={index} className="relative text-left group">
-                      {/* Timeline dot */}
-                      <span className="absolute -left-[22px] top-1 w-3 h-3 rounded-full bg-cyan-400 border-2 border-slate-950 shadow-md shadow-cyan-500/50 group-hover:scale-125 transition-transform duration-200" />
-                      <div className="flex flex-col">
-                        <span className="text-[9px] text-cyan-400 font-bold uppercase tracking-wider">
-                          {item.year || item.date || item.status}
-                        </span>
-                        <span className="text-xs font-bold text-white mt-0.5">
-                          {item.title || item.degree}
-                        </span>
-                        <span className="text-[10px] text-cyan-200/85 font-medium">
-                          {item.company || item.specialization || (item.type ? `${item.type} Milestone` : "")}
-                        </span>
-                        <span className="text-[11px] text-slate-300 leading-relaxed mt-1 block font-normal">
-                          {item.description}
-                        </span>
-                      </div>
-                    </div>
+                    <li key={index} className="relative">
+                      <span
+                        className={`absolute -left-[21px] top-1.5 h-2 w-2 rounded-full ring-4 ring-zinc-950 ${index === 0 ? "bg-brand-300" : "bg-zinc-600"}`}
+                      />
+                      <p className="font-mono text-[10px] uppercase tracking-wide text-zinc-500">
+                        {item.year || item.date || item.status}
+                      </p>
+                      <p className="mt-0.5 text-sm font-medium text-zinc-100">
+                        {item.title || item.degree}
+                        {(item.company || item.specialization) && (
+                          <span className="font-normal text-zinc-500"> · {item.company || item.specialization}</span>
+                        )}
+                      </p>
+                      {item.description && (
+                        <p className="mt-1 text-xs leading-relaxed text-zinc-400">{item.description}</p>
+                      )}
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ol>
+              </Panel>
             )}
           </div>
+        )}
+
+        {/* Message actions */}
+        {content && !isStreaming && (
+          <button
+            onClick={() => handleCopy(content, "message")}
+            aria-label="Copy reply"
+            className="flex cursor-pointer items-center gap-1 rounded-md px-1.5 py-1 text-[11px] text-zinc-500 opacity-0 transition hover:bg-white/5 hover:text-zinc-200 focus:opacity-100 group-hover:opacity-100"
+          >
+            {copiedText === "message" ? <FiCheck className="text-emerald-400" /> : <FiCopy />}
+            {copiedText === "message" ? "Copied" : "Copy"}
+          </button>
         )}
       </div>
     </motion.div>

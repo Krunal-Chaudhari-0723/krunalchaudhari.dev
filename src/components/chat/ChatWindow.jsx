@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaPaperPlane } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FiArrowUp, FiFolder, FiBriefcase, FiCode, FiMail } from "react-icons/fi";
+import myCv from "../../assets/Krunal-Full Stack.pdf";
+import AssistantAvatar from "./AssistantAvatar";
 import ChatHeader from "./ChatHeader";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
 import SuggestedQuestions from "./SuggestedQuestions";
 
 // Local static data imports for frontend RAG fallback routing
-import personalData from "../../../data/personal.json";
 import projectsData from "../../../data/projects.json";
 import experienceData from "../../../data/experience.json";
 import skillsData from "../../../data/skills.json";
@@ -38,18 +39,18 @@ function levenshteinDistance(a, b) {
   return tmp[a.length][b.length];
 }
 
-// Fuzzy matching check
-function fuzzyMatch(word, target) {
-  const w = word.toLowerCase();
-  const t = target.toLowerCase();
-  if (w.includes(t) || t.includes(w)) return true;
-  
-  if (w.length >= 3 && t.length >= 3) {
-    const distance = levenshteinDistance(w, t);
-    const maxAllowed = t.length > 5 ? 2 : 1;
-    return distance <= maxAllowed;
+// Whole-word term matching with typo tolerance on longer words only
+// (substring checks made "you" match "yo" and "achievements" match "hi")
+function matchesTerm(queryWords, term) {
+  const termWords = term.toLowerCase().replace(/[^\w\s]/g, "").split(/\s+/).filter(Boolean);
+  if (termWords.length > 1) {
+    return (" " + queryWords.join(" ") + " ").includes(" " + termWords.join(" ") + " ");
   }
-  return false;
+  const t = termWords[0];
+  if (!t) return false;
+  if (queryWords.includes(t)) return true;
+  if (t.length < 5) return false;
+  return queryWords.some((w) => w.length >= 4 && (w.startsWith(t) || levenshteinDistance(w, t) <= (t.length > 7 ? 2 : 1)));
 }
 
 // Local keywords mapping for intents fallback
@@ -77,7 +78,7 @@ const INTENTS = [
   },
   {
     id: "projects",
-    terms: ["project", "projects", "portfolio", "built", "develop", "developed", "app", "apps", "eduflow", "attendiq", "attendance", "hackathon", "seloria", "getseloria", "jadoo", "food", "codebase", "creation", "freelance", "worklist"],
+    terms: ["project", "projects", "portfolio", "built", "develop", "developed", "app", "apps", "eduflow", "attendiq", "attendance", "hackathon", "brightpaper", "portal", "system portal", "freelance site", "chaudharikrunal", "seloria", "getseloria", "jadoo", "food", "codebase", "creation", "freelance", "worklist"],
     type: "projects",
     data: projectsData,
     content: "Here are my featured projects. I build scalable applications with focus on clean architecture and performance:",
@@ -85,7 +86,7 @@ const INTENTS = [
   },
   {
     id: "experience",
-    terms: ["experience", "experiences", "job", "jobs", "work", "intern", "internship", "faculty", "company", "companies", "career", "history", "trueline", "hidden ideas", "kash", "mdiit", "tata", "current role", "responsibilities", "laravel experience", "react experience", "node experience", "work history", "timeline"],
+    terms: ["experience", "experiences", "job", "jobs", "work", "intern", "internship", "faculty", "company", "companies", "career", "history", "trueline", "hidden ideas", "bright paper", "brightpaper", "kash", "mdiit", "tata", "current role", "responsibilities", "laravel experience", "react experience", "node experience", "work history", "timeline"],
     type: "experience",
     data: experienceData,
     content: "I have over 1 year of experience across fullstack development, AI concepts, and academic mentoring. Here is my professional timeline:",
@@ -215,25 +216,39 @@ const DEFAULT_SUGGESTIONS = [
   "Availability"
 ];
 
+// Starter cards on the empty state; prompts are phrased to hit the matching intents
+const STARTERS = [
+  { icon: FiFolder, title: "Projects", text: "What have you built?", prompt: "Show your projects" },
+  { icon: FiBriefcase, title: "Experience", text: "Where have you worked?", prompt: "Tell me about your experience" },
+  { icon: FiCode, title: "Tech stack", text: "Languages & frameworks", prompt: "What's your tech stack?" },
+  { icon: FiMail, title: "Hire Krunal", text: "Contact & availability", prompt: "How can I hire you?" },
+];
+
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState(DEFAULT_SUGGESTIONS);
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
-  
+  const [isResponding, setIsResponding] = useState(false);
+  const scrollAreaRef = useRef(null);
+  const inputRef = useRef(null);
+
   // Guard Refs to prevent double event firing and race conditions
   const isSendingRef = useRef(false);
   const fallbackIdRef = useRef(0);
 
-  // Auto-scroll to bottom of chat
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const hasConversation = messages.length > 1;
 
+  // Auto-scroll to bottom of chat (scrolls the message list only, never the page)
   useEffect(() => {
-    scrollToBottom();
+    const area = scrollAreaRef.current;
+    if (area) area.scrollTo({ top: area.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
+
+  // Focus the input when the chat opens
+  useEffect(() => {
+    inputRef.current?.focus({ preventScroll: true });
+  }, []);
 
   // Handle keyboard listener to close chat with Escape key
   useEffect(() => {
@@ -260,16 +275,8 @@ const ChatWindow = ({ onClose }) => {
 
     let matched = null;
     for (const intent of INTENTS) {
-      for (const term of intent.terms) {
-        if (normalizedQuery.includes(term)) {
-          matched = intent;
-          break;
-        }
-        const isFuzzy = queryWords.some(qw => fuzzyMatch(qw, term));
-        if (isFuzzy) {
-          matched = intent;
-          break;
-        }
+      if (intent.terms.some((term) => matchesTerm(queryWords, term))) {
+        matched = intent;
       }
       if (matched) break;
     }
@@ -279,7 +286,7 @@ const ChatWindow = ({ onClose }) => {
 
     let type = null;
     let data = null;
-    let fallbackText = "";
+    let fallbackText;
     let localSuggestions = ["Skills", "Projects", "Contact"];
 
     if (matched && !isUnrelated) {
@@ -292,7 +299,7 @@ const ChatWindow = ({ onClose }) => {
         setTimeout(() => {
           if (activeFallbackId !== fallbackIdRef.current) return;
           const link = document.createElement("a");
-          link.href = contactData.resumePath;
+          link.href = myCv;
           link.download = contactData.resumeName || "Krunal_Resume.pdf";
           document.body.appendChild(link);
           link.click();
@@ -350,6 +357,7 @@ const ChatWindow = ({ onClose }) => {
     if (!text.trim() || isSendingRef.current) return;
 
     isSendingRef.current = true;
+    setIsResponding(true);
     const currentFallbackId = ++fallbackIdRef.current; // Cancel any active loops and set new transaction ID
 
     const userMessage = { role: "user", content: text };
@@ -456,7 +464,7 @@ const ChatWindow = ({ onClose }) => {
               setTimeout(() => {
                 if (currentFallbackId !== fallbackIdRef.current) return;
                 const link = document.createElement("a");
-                link.href = parsedData.resumePath;
+                link.href = myCv;
                 link.download = parsedData.resumeName || "Krunal_Resume.pdf";
                 document.body.appendChild(link);
                 link.click();
@@ -487,63 +495,127 @@ const ChatWindow = ({ onClose }) => {
       }
     } finally {
       isSendingRef.current = false;
+      setIsResponding(false);
       setIsTyping(false);
     }
   };
 
+  const lastIndex = messages.length - 1;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 50, scale: 0.95 }}
-      transition={{ type: "spring", damping: 25, stiffness: 220 }}
-      className="fixed bottom-24 right-4 md:right-8 z-50 flex flex-col w-[calc(100vw-32px)] md:w-[400px] h-[550px] md:h-[600px] bg-slate-955/85 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden"
+      exit={{ opacity: 0, y: 24, scale: 0.97 }}
+      transition={{ type: "spring", damping: 26, stiffness: 260 }}
+      role="dialog"
+      aria-label="Chat with Krunal's AI assistant"
+      className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-zinc-950 md:inset-auto md:bottom-24 md:right-8 md:h-[min(680px,calc(100dvh-8rem))] md:w-[420px] md:rounded-3xl md:border md:border-white/10 md:bg-zinc-950/90 md:shadow-[0_30px_100px_-20px_rgb(0_0_0/0.9),0_0_0_1px_rgb(139_92_246/0.15)] md:backdrop-blur-2xl"
     >
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-48 overflow-hidden">
+        <div className="absolute -top-24 left-1/2 h-48 w-80 -translate-x-1/2 rounded-full bg-brand-600/25 blur-[70px]" />
+      </div>
+
       {/* Header */}
-      <ChatHeader onClose={onClose} onClear={handleClearChat} />
+      <ChatHeader onClose={onClose} onClear={handleClearChat} canClear={hasConversation} />
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 scrollbar-thin scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20 scrollbar-track-transparent">
-        <div className="flex flex-col gap-1">
-          {messages.map((message, index) => (
-            <MessageBubble key={index} message={message} />
-          ))}
+      <div ref={scrollAreaRef} className="chat-scroll relative flex-1 overflow-y-auto px-4 py-4">
+        {!hasConversation ? (
+          /* Empty state */
+          <div className="flex min-h-full flex-col justify-center py-4">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="text-center"
+            >
+              <div className="mx-auto w-fit">
+                <AssistantAvatar size="h-14 w-14" />
+              </div>
+              <h2 className="mt-4 text-xl font-semibold tracking-tight text-zinc-50">
+                Hi, I'm <span className="text-gradient">Krunal's AI</span>
+              </h2>
+              <p className="mx-auto mt-1.5 max-w-[280px] text-sm leading-relaxed text-zinc-400">
+                Ask me anything about his projects, experience, skills or how to work with him.
+              </p>
+            </motion.div>
 
-          {isTyping && <TypingIndicator />}
-          <div ref={messagesEndRef} />
-        </div>
+            <div className="mt-7 grid grid-cols-2 gap-2">
+              {STARTERS.map(({ icon: Icon, title, text, prompt }, idx) => (
+                <motion.button
+                  key={title}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + idx * 0.05 }}
+                  onClick={() => handleSendMessage(prompt)}
+                  className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-left transition-colors hover:border-brand-400/40 hover:bg-brand-400/[0.06]"
+                >
+                  <Icon className="text-brand-300 transition-transform group-hover:-translate-y-0.5" />
+                  <p className="mt-2.5 text-sm font-medium text-zinc-100">{title}</p>
+                  <p className="mt-0.5 text-xs text-zinc-500">{text}</p>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            {messages.slice(1).map((message, index) => {
+              const realIndex = index + 1;
+              // Skip the empty placeholder while the typing indicator is shown
+              if (message.role === "assistant" && !message.content && !message.type) return null;
+              return (
+                <MessageBubble
+                  key={realIndex}
+                  message={message}
+                  isStreaming={isResponding && realIndex === lastIndex && message.role === "assistant"}
+                />
+              );
+            })}
+
+            {isTyping && <TypingIndicator />}
+          </div>
+        )}
       </div>
 
-      {/* Suggested Questions container */}
-      <div className="px-5 py-1.5 bg-slate-950/50 border-t border-white/5">
-        <SuggestedQuestions onSelectQuestion={handleSendMessage} suggestions={suggestions} />
-      </div>
+      {/* Composer */}
+      <div className="relative border-t border-white/[0.06] px-4 pb-3 pt-3">
+        {hasConversation && (
+          <SuggestedQuestions onSelectQuestion={handleSendMessage} suggestions={suggestions} disabled={isResponding} />
+        )}
 
-      {/* Footer Form */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSendMessage(input);
-        }}
-        className="flex items-center gap-2 p-4 border-t border-white/10 bg-slate-900/60 backdrop-blur-md"
-      >
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about my skills, work history..."
-          disabled={isTyping}
-          className="flex-1 px-4 py-2.5 rounded-xl border border-white/10 bg-slate-955/70 text-white text-xs placeholder:text-slate-550 outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/10 transition-all duration-250 disabled:opacity-50 shadow-inner"
-        />
-
-        <button
-          type="submit"
-          disabled={!input.trim() || isTyping}
-          className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white text-sm transition shadow-lg shadow-cyan-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendMessage(input);
+          }}
+          className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1.5 pl-4 transition focus-within:border-brand-400/50 focus-within:ring-4 focus-within:ring-brand-400/10"
         >
-          <FaPaperPlane className="text-xs" />
-        </button>
-      </form>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask about projects, skills, experience…"
+            aria-label="Message"
+            className="min-w-0 flex-1 bg-transparent py-2 text-sm text-zinc-100 outline-none placeholder:text-zinc-500"
+          />
+
+          <button
+            type="submit"
+            disabled={!input.trim() || isResponding}
+            aria-label="Send message"
+            className="btn-primary flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+          >
+            <FiArrowUp className="text-base" />
+          </button>
+        </form>
+
+        <p className="mt-2 text-center text-[10px] text-zinc-600">
+          AI answers can be imperfect · Powered by Gemini
+        </p>
+      </div>
     </motion.div>
   );
 };

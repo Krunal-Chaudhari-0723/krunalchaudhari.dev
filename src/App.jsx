@@ -1,5 +1,5 @@
-// App.js - Using HashRouter (Corrected)
-import { HashRouter, Routes, Route } from "react-router-dom";
+// App.js - Single page; Navbar keeps the URL (/about, /contact, ...) in sync with the section in view
+import { MotionConfig } from "framer-motion";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -11,38 +11,27 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Achievements from "./components/Achievements";
 import ChatWidget from "./components/chat/ChatWidget";
-
-function Home() {
-  return (
-    <>
-      <Hero />
-      <About />
-      <Skills />
-      <Achievements />
-      <Projects />
-      <Experience />
-      <Contact />
-    </>
-  );
-}
+import useCardSpotlight from "./lib/useCardSpotlight";
 
 function App() {
+  useCardSpotlight();
+
   return (
-    <HashRouter>
+    <MotionConfig reducedMotion="user">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/skills" element={<Skills />} />
-        <Route path="/achievements" element={<Achievements />} /> {/* 👈 Fixed spelling */}
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/experience" element={<Experience />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      <main>
+        <Hero />
+        <About />
+        <Projects />
+        <Experience />
+        <Skills />
+        <Achievements />
+        <Contact />
+      </main>
       <Footer />
       <SpeedInsights />
       <ChatWidget />
-    </HashRouter>
+    </MotionConfig>
   );
 }
 

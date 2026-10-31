@@ -1,104 +1,77 @@
-import { motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-import { HiEye } from "react-icons/hi";
-import AttendIQImg from '../../assets/attendiq.png';
+import { FiArrowUpRight } from "react-icons/fi";
+import AttendIQImg from "../../assets/attendiq.png";
+import BrightPaperImg from "../../assets/brightpaper.png";
+import SystemPortalImg from "../../assets/systemportal.png";
+import FreelanceSiteImg from "../../assets/chaudharikrunal.png";
 import SelioraImg from '../../assets/seloria.png';
 import FoodImg from '../../assets/food.png';
 import JadooImg from '../../assets/Jadoo.png';
 
 const imageMap = {
   "AttendIQ - Smart Attendance": AttendIQImg,
+  "Bright Paper Website": BrightPaperImg,
+  "Bright Paper Systems Portal": SystemPortalImg,
+  "Freelance Studio Website": FreelanceSiteImg,
   "Seliora FreeLance": SelioraImg,
   "Food Delivery App": FoodImg,
   "Jadoo - Travels Website": JadooImg,
 };
 
+// Compact card used in the chat's horizontal project carousel
 const ProjectCard = ({ project }) => {
-  const { title, description, tech, github, demo, challenges, achievement } = project;
+  const { title, description, tech, github, demo, achievement } = project;
   const projectImg = imageMap[title] || null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3 }}
-      className="flex flex-col w-full bg-slate-900/80 border border-slate-700/50 rounded-xl overflow-hidden shadow-lg shadow-black/30 hover:border-cyan-500/30 transition-all duration-300 my-2"
-    >
-      {/* Project Image */}
+    <div className="flex w-60 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-colors hover:border-white/20">
       {projectImg && (
-        <div className="relative h-32 w-full overflow-hidden border-b border-slate-800">
-          <img
-            src={projectImg}
-            alt={title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
+        <div className="relative aspect-[16/10] overflow-hidden border-b border-white/10 bg-zinc-900">
+          <img src={projectImg} alt={title} loading="lazy" className="h-full w-full object-cover object-top" />
           {achievement && (
-            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[9px] font-semibold shadow">
+            <span className="absolute left-2 top-2 rounded-full bg-amber-400/90 px-2 py-0.5 text-[10px] font-semibold text-amber-950">
               {achievement}
             </span>
           )}
         </div>
       )}
 
-      {/* Content */}
-      <div className="p-4 flex-1 flex flex-col">
-        <h4 className="text-sm font-semibold text-white mb-1.5 hover:text-cyan-400 transition-colors">
-          {title}
-        </h4>
-        <p className="text-slate-350 text-[11px] leading-relaxed mb-3 line-clamp-4">
-          {description}
-        </p>
+      <div className="flex flex-1 flex-col p-3">
+        <h4 className="text-sm font-medium text-zinc-50">{title}</h4>
+        <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-zinc-400">{description}</p>
 
-        {/* Challenges section */}
-        {challenges && (
-          <div className="mb-3 bg-cyan-950/20 border border-cyan-850/30 rounded-lg p-2">
-            <span className="text-[10px] font-semibold text-cyan-400 block mb-0.5">Challenges Overcome:</span>
-            <p className="text-slate-400 text-[10px] leading-relaxed">
-              {challenges}
-            </p>
-          </div>
-        )}
-
-        {/* Tech Stack */}
-        <div className="flex flex-wrap gap-1 mb-4 mt-auto">
-          {tech.map((t, idx) => (
-            <span
-              key={idx}
-              className="px-2 py-0.5 rounded-full text-[9px] font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
-            >
+        <div className="mt-2.5 flex flex-wrap gap-1">
+          {tech.slice(0, 3).map((t) => (
+            <span key={t} className="rounded border border-white/10 px-1.5 py-px font-mono text-[10px] text-zinc-400">
               {t}
             </span>
           ))}
         </div>
 
-        {/* Action Links */}
-        <div className="flex gap-2 w-full">
-          {github && (
-            <a
-              href={github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-slate-700 hover:text-white text-slate-300 text-xs font-medium transition duration-200"
-            >
-              <FaGithub className="text-[11px]" />
-              GitHub
-            </a>
-          )}
+        <div className="mt-auto flex items-center gap-4 pt-3 text-xs">
           {demo && (
             <a
               href={demo}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white text-xs font-medium transition duration-200 shadow-md shadow-cyan-500/10"
+              className="inline-flex items-center gap-1 font-medium text-zinc-100 hover:text-brand-300"
             >
-              <HiEye className="text-[11px]" />
-              Demo
+              Live demo <FiArrowUpRight />
+            </a>
+          )}
+          {github && (
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-100"
+            >
+              <FaGithub /> Code
             </a>
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

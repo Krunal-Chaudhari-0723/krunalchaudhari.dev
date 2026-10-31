@@ -1,19 +1,43 @@
 [
   {
-    "year": "APR 2026 - PRESENT",
-    "title": "Fullstack Developer & AI Engineer",
+    "year": "AUG 2026 - PRESENT",
+    "title": "Full Stack Developer (MERN)",
+    "company": "Bright Paper",
+    "description": "Developing and maintaining web applications and internal tools that support day-to-day business workflows. Building frontend and backend features, integrating APIs and fixing production issues.",
+    "tags": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB"
+    ],
+    "color": "cyan",
+    "icon": "💼"
+  },
+  {
+    "year": "MAR 2026 - AUG 2026",
+    "title": "Full Stack Developer (MERN)",
     "company": "The Hidden Ideas Infotech",
-    "description": "Building end-to-end web applications with modern tech stack. Implementing AI solutions and optimizing performance for scalable platforms.",
-    "tags": ["React", "Node.js", "Python", "AI"],
+    "description": "Built end-to-end features for HRMS and C2C CRM products. Developed REST APIs for authentication, CRUD workflows and data validation, designed MongoDB schemas for core modules and resolved production bugs.",
+    "tags": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB"
+    ],
     "color": "cyan",
     "icon": "🤖"
   },
   {
     "year": "FEB 2026 - MAR 2026",
-    "title": "Fullstack Developer",
+    "title": "Full Stack Developer (MERN), Trainee",
     "company": "Trueline Solutions",
-    "description": "Developed informative web applications during intensive training period. Collaborated with team to deliver responsive and user-friendly interfaces.",
-    "tags": ["JavaScript", "MongoDB", "Express"],
+    "description": "Shipped features and bug fixes on a live client website using the MERN stack, and improved page performance and cross-device responsiveness based on client feedback.",
+    "tags": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express"
+    ],
     "color": "emerald",
     "icon": "💼"
   },
@@ -22,7 +46,11 @@
     "title": "Programming Faculty",
     "company": "MDIIT",
     "description": "Teaching programming, web development and guiding students in projects. Mentored 100+ students in building real-world applications.",
-    "tags": ["Teaching", "Mentoring", "Curriculum Design"],
+    "tags": [
+      "Teaching",
+      "Mentoring",
+      "Curriculum Design"
+    ],
     "color": "purple",
     "icon": "📚"
   },
@@ -31,7 +59,11 @@
     "title": "Gen AI Intern",
     "company": "TATA",
     "description": "Worked on AI concepts, prompt engineering and modern AI tools. Developed prototypes showcasing generative AI capabilities.",
-    "tags": ["GPT", "Prompt Engineering", "LLM"],
+    "tags": [
+      "GPT",
+      "Prompt Engineering",
+      "LLM"
+    ],
     "color": "orange",
     "icon": "🎯"
   },
@@ -40,7 +72,12 @@
     "title": "Backend Developer Intern",
     "company": "Kash Info Solution",
     "description": "Worked on Laravel applications, database management and backend development. Implemented RESTful APIs and optimized database queries.",
-    "tags": ["Laravel", "PHP", "MySQL", "APIs"],
+    "tags": [
+      "Laravel",
+      "PHP",
+      "MySQL",
+      "APIs"
+    ],
     "color": "indigo",
     "icon": "⚙️"
   }

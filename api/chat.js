@@ -25,18 +25,18 @@ function levenshteinDistance(a, b) {
   return tmp[a.length][b.length];
 }
 
-// Fuzzy matching check
-function fuzzyMatch(word, target) {
-  const w = word.toLowerCase();
-  const t = target.toLowerCase();
-  if (w.includes(t) || t.includes(w)) return true;
-  
-  if (w.length >= 3 && t.length >= 3) {
-    const distance = levenshteinDistance(w, t);
-    const maxAllowed = t.length > 5 ? 2 : 1;
-    return distance <= maxAllowed;
+// Whole-word term matching with typo tolerance on longer words only
+// (substring checks made "you" match "yo" and "achievements" match "hi")
+function matchesTerm(queryWords, term) {
+  const termWords = term.toLowerCase().replace(/[^\w\s]/g, "").split(/\s+/).filter(Boolean);
+  if (termWords.length > 1) {
+    return (" " + queryWords.join(" ") + " ").includes(" " + termWords.join(" ") + " ");
   }
-  return false;
+  const t = termWords[0];
+  if (!t) return false;
+  if (queryWords.includes(t)) return true;
+  if (t.length < 5) return false;
+  return queryWords.some((w) => w.length >= 4 && (w.startsWith(t) || levenshteinDistance(w, t) <= (t.length > 7 ? 2 : 1)));
 }
 
 // Reads dynamic JSON files safely from /data/
@@ -83,7 +83,7 @@ const INTENTS = [
   },
   {
     id: "experience",
-    terms: ["experience", "experiences", "job", "jobs", "work", "intern", "internship", "faculty", "company", "companies", "career", "history", "trueline", "hidden ideas", "kash", "mdiit", "tata", "current role", "responsibilities", "laravel experience", "react experience", "node experience", "work history", "timeline"],
+    terms: ["experience", "experiences", "job", "jobs", "work", "intern", "internship", "faculty", "company", "companies", "career", "history", "trueline", "hidden ideas", "bright paper", "brightpaper", "kash", "mdiit", "tata", "current role", "responsibilities", "laravel experience", "react experience", "node experience", "work history", "timeline"],
     type: "experience",
     dataFilename: "experience.json",
     content: "I have over 1 year of experience across fullstack development, AI concepts, and academic mentoring. Here is my professional timeline:",
@@ -229,16 +229,8 @@ export default async function handler(req, res) {
   // Intent Engine matching
   let matchedIntent = null;
   for (const intent of INTENTS) {
-    for (const term of intent.terms) {
-      if (normalizedQuery.includes(term)) {
-        matchedIntent = intent;
-        break;
-      }
-      const isFuzzy = queryWords.some(qw => fuzzyMatch(qw, term));
-      if (isFuzzy) {
-        matchedIntent = intent;
-        break;
-      }
+    if (intent.terms.some((term) => matchesTerm(queryWords, term))) {
+      matchedIntent = intent;
     }
     if (matchedIntent) break;
   }
